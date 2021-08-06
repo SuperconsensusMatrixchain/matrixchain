@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/xuperchain/xuperchain/data/mock"
-	_ "github.com/xuperchain/xupercore/lib/storage/kvdb/leveldb"
+	_ "github.com/superconsensus-chain/xupercore/lib/storage/kvdb/leveldb"
 )
 
 func TestPruneLedger(t *testing.T) {

@@ -13,7 +13,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
 )
 
 type GetComplianceCheckSignCommand struct {

@@ -12,9 +12,9 @@ import (
 
 	"github.com/xuperchain/xuperchain/service/common"
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/state/utxo"
-	aclUtils "github.com/xuperchain/xupercore/kernel/permission/acl/utils"
-	"github.com/xuperchain/xupercore/lib/utils"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
+	aclUtils "github.com/superconsensus-chain/xupercore/kernel/permission/acl/utils"
+	"github.com/superconsensus-chain/xupercore/lib/utils"
 )
 
 // MergeUtxoCommand necessary parameter for merge utxo

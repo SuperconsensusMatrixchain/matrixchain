@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 
-	"github.com/xuperchain/xupercore/kernel/engines"
-	"github.com/xuperchain/xupercore/lib/logs"
+	"github.com/superconsensus-chain/xupercore/kernel/engines"
+	"github.com/superconsensus-chain/xupercore/lib/logs"
 
 	scom "github.com/xuperchain/xuperchain/service/common"
 	sconf "github.com/xuperchain/xuperchain/service/config"

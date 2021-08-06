@@ -7,7 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/lib/utils"
+	"github.com/superconsensus-chain/xupercore/lib/utils"
 )
 
 // 本文件封装了和共识模块有关的client调用接口, 具体格式为:

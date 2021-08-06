@@ -6,8 +6,8 @@ import (
 	"github.com/golang/protobuf/proto"
 
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/xldgpb"
-	"github.com/xuperchain/xupercore/protos"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/xldgpb"
+	"github.com/superconsensus-chain/xupercore/protos"
 )
 
 // 为了完全兼容老版本pb结构，转换交易结构
@@ -89,6 +89,85 @@ func BlockToXchain(block *xldgpb.InternalBlock) *pb.InternalBlock {
 
 	return &newBlock
 }
+
+func TestToXchain(CandidateRatio *protos.CandidateRatio)*pb.CandidateRatio{
+	if CandidateRatio == nil {
+		return nil
+	}
+	CandidateRatioBuff , err := proto.Marshal(CandidateRatio)
+	if err != nil {
+		return nil
+	}
+	var newCandidateRatio pb.CandidateRatio
+	err = proto.Unmarshal(CandidateRatioBuff, &newCandidateRatio)
+	if err != nil {
+		return nil
+	}
+
+	return &newCandidateRatio
+}
+
+func GetVerificationToXchain(VerificationTable *protos.VerificationTable)*pb.VerificationTable{
+	if VerificationTable == nil{
+		return nil
+	}
+	VerificationTableBUff , err := proto.Marshal(VerificationTable)
+	if err != nil {
+
+		return nil
+	}
+
+	var newVerificationTableBUff pb.VerificationTable
+	err = proto.Unmarshal(VerificationTableBUff, &newVerificationTableBUff)
+	if err != nil {
+		fmt.Printf("D__打印转换错误:%s \n",err)
+		return nil
+	}
+	return &newVerificationTableBUff
+}
+
+func GetSystemStatusExplorerToXchain(BCStatusExplorer *protos.BCStatusExplorer)*pb.BCStatusExplorer{
+	if BCStatusExplorer == nil {
+		return nil
+	}
+	BCStatusExplorerBUff , err := proto.Marshal(BCStatusExplorer)
+	if err != nil {
+		return nil
+	}
+
+	var newBCStatusExplorerBUff pb.BCStatusExplorer
+	err = proto.Unmarshal(BCStatusExplorerBUff, &newBCStatusExplorerBUff)
+	if err != nil {
+		return nil
+	}
+
+	return &newBCStatusExplorerBUff
+}
+
+func VotingRecordsToXchain(VotingResponse *protos.PledgeVotingResponse)*pb.PledgeVotingResponse{
+	if VotingResponse == nil {
+		return nil
+	}
+	//fmt.Printf("D__打印转换前数据VotingResponse.FrozenAssetsTable：%s \n",VotingResponse.FrozenAssetsTable)
+	//fmt.Printf("D__打印转换前数据VotingResponse.VoteDetailsStatus：%s \n",VotingResponse.VoteDetailsStatus)
+	//fmt.Printf("D__打印转换前数据VotingResponse.Freezetotal：%s \n",VotingResponse.Freezetotal)
+
+	VotingResponseBuff , err := proto.Marshal(VotingResponse)
+	if err != nil {
+		fmt.Printf("D__打印解析错误:%s \n",err)
+		return nil
+	}
+
+	var newVotingResponseBuff pb.PledgeVotingResponse
+
+	err = proto.Unmarshal(VotingResponseBuff, &newVotingResponseBuff)
+	if err != nil {
+		fmt.Printf("D__打印转换错误:%s \n",err)
+		return nil
+	}
+	return &newVotingResponseBuff
+}
+
 
 func ConvertInvokeReq(reqs []*pb.InvokeRequest) ([]*protos.InvokeRequest, error) {
 	if reqs == nil {

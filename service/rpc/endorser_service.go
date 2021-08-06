@@ -18,11 +18,11 @@ import (
 	scom "github.com/xuperchain/xuperchain/service/common"
 	sconf "github.com/xuperchain/xuperchain/service/config"
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/state/utxo/txhash"
-	sctx "github.com/xuperchain/xupercore/example/xchain/common/context"
-	ecom "github.com/xuperchain/xupercore/kernel/engines/xuperos/common"
-	crypto_client "github.com/xuperchain/xupercore/lib/crypto/client"
-	"github.com/xuperchain/xupercore/lib/crypto/hash"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo/txhash"
+	sctx "github.com/superconsensus-chain/xupercore/example/xchain/common/context"
+	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
+	crypto_client "github.com/superconsensus-chain/xupercore/lib/crypto/client"
+	"github.com/superconsensus-chain/xupercore/lib/crypto/hash"
 )
 
 const (

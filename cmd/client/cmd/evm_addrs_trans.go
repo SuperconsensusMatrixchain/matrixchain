@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/hyperledger/burrow/crypto"
-	"github.com/xuperchain/xupercore/bcs/contract/evm"
+	"github.com/superconsensus-chain/xupercore/bcs/contract/evm"
 )
 
 // EVMAddrTransCommand address translation between EVM and xchain

@@ -14,7 +14,7 @@ import (
 	scom "github.com/xuperchain/xuperchain/service/common"
 	sconf "github.com/xuperchain/xuperchain/service/config"
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/lib/logs"
+	"github.com/superconsensus-chain/xupercore/lib/logs"
 )
 
 type Gateway struct {

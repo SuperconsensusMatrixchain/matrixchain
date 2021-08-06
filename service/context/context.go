@@ -6,9 +6,9 @@ import (
 	"time"
 
 	scom "github.com/xuperchain/xuperchain/service/common"
-	"github.com/xuperchain/xupercore/kernel/engines/xuperos/common"
-	"github.com/xuperchain/xupercore/lib/logs"
-	"github.com/xuperchain/xupercore/lib/timer"
+	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
+	"github.com/superconsensus-chain/xupercore/lib/logs"
+	"github.com/superconsensus-chain/xupercore/lib/timer"
 )
 
 const (

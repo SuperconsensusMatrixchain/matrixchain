@@ -33,3 +33,4 @@ initWindowSize: 131072
 # initConnWindowSize window size for a connection
 # The lower bound for window size is 64K and any value smaller than that will be ignored
 initConnWindowSize: 65536
+adapterAllowCROS: true

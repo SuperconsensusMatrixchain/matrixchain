@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xupercore/kernel/network/p2p"
+	"github.com/superconsensus-chain/xupercore/kernel/network/p2p"
 )
 
 // NetURLGenCommand neturl gen cmd

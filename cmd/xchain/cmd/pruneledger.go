@@ -12,16 +12,16 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/def"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/ledger"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/state"
-	sctx "github.com/xuperchain/xupercore/bcs/ledger/xledger/state/context"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/xldgpb"
-	"github.com/xuperchain/xupercore/kernel/common/xconfig"
-	"github.com/xuperchain/xupercore/lib/crypto/client"
-	"github.com/xuperchain/xupercore/lib/logs"
-	_ "github.com/xuperchain/xupercore/lib/storage/kvdb/leveldb"
-	xutils "github.com/xuperchain/xupercore/lib/utils"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/def"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/ledger"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state"
+	sctx "github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/context"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/xldgpb"
+	"github.com/superconsensus-chain/xupercore/kernel/common/xconfig"
+	"github.com/superconsensus-chain/xupercore/lib/crypto/client"
+	"github.com/superconsensus-chain/xupercore/lib/logs"
+	_ "github.com/superconsensus-chain/xupercore/lib/storage/kvdb/leveldb"
+	xutils "github.com/superconsensus-chain/xupercore/lib/utils"
 )
 
 // PruneLedgerCommand prune ledger  cmd

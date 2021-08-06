@@ -4,15 +4,15 @@ import (
 	"math/big"
 	"strconv"
 
-	lpb "github.com/xuperchain/xupercore/bcs/ledger/xledger/xldgpb"
-	xctx "github.com/xuperchain/xupercore/kernel/common/xcontext"
-	ecom "github.com/xuperchain/xupercore/kernel/engines/xuperos/common"
-	"github.com/xuperchain/xupercore/kernel/engines/xuperos/reader"
-	"github.com/xuperchain/xupercore/kernel/engines/xuperos/xpb"
-	aclUtils "github.com/xuperchain/xupercore/kernel/permission/acl/utils"
-	cryptoHash "github.com/xuperchain/xupercore/lib/crypto/hash"
-	"github.com/xuperchain/xupercore/lib/logs"
-	"github.com/xuperchain/xupercore/protos"
+	lpb "github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/xldgpb"
+	xctx "github.com/superconsensus-chain/xupercore/kernel/common/xcontext"
+	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
+	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/reader"
+	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/xpb"
+	aclUtils "github.com/superconsensus-chain/xupercore/kernel/permission/acl/utils"
+	cryptoHash "github.com/superconsensus-chain/xupercore/lib/crypto/hash"
+	"github.com/superconsensus-chain/xupercore/lib/logs"
+	"github.com/superconsensus-chain/xupercore/protos"
 
 	sctx "github.com/xuperchain/xuperchain/service/context"
 )
@@ -54,6 +54,22 @@ func (t *ChainHandle) PreExec(req []*protos.InvokeRequest,
 
 func (t *ChainHandle) QueryTx(txId []byte) (*xpb.TxInfo, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).QueryTx(txId)
+}
+
+func (t *ChainHandle) Test (address string)(*protos.CandidateRatio,error){
+	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).Test(address)
+}
+
+func (t *ChainHandle)PledgeVotingRecords(address string)(*protos.PledgeVotingResponse,error){
+	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).PledgeVotingRecords(address)
+}
+
+func (t *ChainHandle)GetVerification(address string)(*protos.VerificationTable,error){
+	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).GetVerification(address)
+}
+
+func (t *ChainHandle)GetSystemStatusExplorer()(*protos.BCStatusExplorer,error){
+	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).GetSystemStatusExplorer()
 }
 
 func (t *ChainHandle) SelectUtxo(account string, need *big.Int, isLock, isExclude bool,

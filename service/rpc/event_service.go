@@ -11,8 +11,8 @@ import (
 	acom "github.com/xuperchain/xuperchain/service/common"
 	sconf "github.com/xuperchain/xuperchain/service/config"
 	"github.com/xuperchain/xuperchain/service/pb"
-	ecom "github.com/xuperchain/xupercore/kernel/engines/xuperos/common"
-	"github.com/xuperchain/xupercore/kernel/engines/xuperos/event"
+	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
+	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/event"
 )
 
 // eventService implements the interface of pb.EventService
@@ -50,7 +50,7 @@ func (e *eventService) Subscribe(req *pb.SubscribeRequest, stream pb.EventServic
 		return err
 	}
 	for iter.Next() {
-		payload := iter.Data()
+		payload := iter.Data2()
 		buf, _ := encfunc(payload)
 		event := &pb.Event{
 			Payload: buf,

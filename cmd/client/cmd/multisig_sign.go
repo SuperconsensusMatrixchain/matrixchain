@@ -15,7 +15,7 @@ import (
 
 	"github.com/xuperchain/xuperchain/service/common"
 	"github.com/xuperchain/xuperchain/service/pb"
-	crypto_client "github.com/xuperchain/xupercore/lib/crypto/client"
+	crypto_client "github.com/superconsensus-chain/xupercore/lib/crypto/client"
 )
 
 // MultisigSignCommand multisig sign struct

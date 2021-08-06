@@ -13,8 +13,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/state/utxo"
-	"github.com/xuperchain/xupercore/kernel/permission/acl/utils"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus-chain/xupercore/kernel/permission/acl/utils"
 )
 
 // AccountNewCommand new account struct

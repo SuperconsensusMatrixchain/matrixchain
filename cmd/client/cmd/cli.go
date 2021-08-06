@@ -25,10 +25,10 @@ import (
 
 	"github.com/xuperchain/xuperchain/service/common"
 	"github.com/xuperchain/xuperchain/service/pb"
-	crypto_client "github.com/xuperchain/xupercore/lib/crypto/client"
-	crypto_base "github.com/xuperchain/xupercore/lib/crypto/client/base"
-	cryptoHash "github.com/xuperchain/xupercore/lib/crypto/hash"
-	"github.com/xuperchain/xupercore/lib/utils"
+	crypto_client "github.com/superconsensus-chain/xupercore/lib/crypto/client"
+	crypto_base "github.com/superconsensus-chain/xupercore/lib/crypto/client/base"
+	cryptoHash "github.com/superconsensus-chain/xupercore/lib/crypto/hash"
+	"github.com/superconsensus-chain/xupercore/lib/utils"
 )
 
 // CommandFunc 代表了一个子命令，用于往Cli注册子命令

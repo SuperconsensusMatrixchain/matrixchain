@@ -2,7 +2,7 @@ package common
 
 import (
 	"github.com/xuperchain/xuperchain/service/pb"
-	ecom "github.com/xuperchain/xupercore/kernel/engines/xuperos/common"
+	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
 )
 
 // 错误映射配置

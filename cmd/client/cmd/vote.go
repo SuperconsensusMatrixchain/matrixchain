@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
 )
 
 // VoteCommand vote cmd

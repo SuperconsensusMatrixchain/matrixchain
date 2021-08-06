@@ -4,14 +4,14 @@ import (
 	"context"
 	"math/big"
 
+	sctx "github.com/superconsensus-chain/xupercore/example/xchain/common/context"
+	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
+	"github.com/superconsensus-chain/xupercore/kernel/network/p2p"
+	"github.com/superconsensus-chain/xupercore/lib/utils"
+	"github.com/superconsensus-chain/xupercore/protos"
 	"github.com/xuperchain/xuperchain/models"
 	acom "github.com/xuperchain/xuperchain/service/common"
 	"github.com/xuperchain/xuperchain/service/pb"
-	sctx "github.com/xuperchain/xupercore/example/xchain/common/context"
-	ecom "github.com/xuperchain/xupercore/kernel/engines/xuperos/common"
-	"github.com/xuperchain/xupercore/kernel/network/p2p"
-	"github.com/xuperchain/xupercore/lib/utils"
-	"github.com/xuperchain/xupercore/protos"
 )
 
 // 注意：
@@ -721,6 +721,118 @@ func (t *RpcServ) GetSystemStatus(gctx context.Context, req *pb.CommonIn) (*pb.S
 	}
 
 	resp.SystemsStatus = systemsStatus
+	return resp, nil
+}
+
+//test 测试链上的数据
+func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest)(*pb.CandidateRatio,error) {
+	// 默认响应
+	resp := &pb.CandidateRatio{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+	if req == nil {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+
+	handle, err := models.NewChainHandle(req.GetBcname(), rctx)
+	if err != nil {
+		rctx.GetLog().Warn("new chain handle failed", "err", err)
+		return resp, ecom.ErrInternal.More("%v", err)
+	}
+
+	CandidateRatio, err := handle.Test(req.GetAddress())
+	if err != nil {
+		rctx.GetLog().Warn("query Test failed", "err", err)
+		return resp, err
+	}
+	//resp = CandidateRatio
+	block := acom.TestToXchain(CandidateRatio)
+
+	return block, nil
+}
+
+//质押投票信息返回
+func (t *RpcServ)PledgeVotingRecords(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.PledgeVotingResponse, error){
+	// 默认响应
+	resp := &pb.PledgeVotingResponse{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+	if req == nil {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+
+	handle, err := models.NewChainHandle(req.GetBcname(), rctx)
+	if err != nil {
+		rctx.GetLog().Warn("new chain handle failed", "err", err)
+		return resp, ecom.ErrInternal.More("%v", err)
+	}
+	votingRecords, err := handle.PledgeVotingRecords(req.GetAddress())
+	if err != nil {
+		rctx.GetLog().Warn("query PledgeVotingRecords failed", "err", err)
+		return resp, err
+	}
+	//反转召唤
+	resp = acom.VotingRecordsToXchain(votingRecords)
+	//	fmt.Printf("D__打印数据votingData.FrozenAssetsTable：%s \n",votingData.FrozenAssetsTable)
+	//	fmt.Printf("D__打印数据votingData.VoteDetailsStatus：%s \n",votingData.VoteDetailsStatus)
+	//	fmt.Printf("D__打印数据votingData.Freezetotal：%s \n",votingData.Freezetotal)
+	return resp, nil
+}
+
+//获取所有验证人信息
+func (t *RpcServ)GetVerification(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.VerificationTable, error){
+	resp := &pb.VerificationTable{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+	if req == nil {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+
+	handle, err := models.NewChainHandle(req.GetBcname(), rctx)
+	if err != nil {
+		rctx.GetLog().Warn("new chain handle failed", "err", err)
+		return resp, ecom.ErrInternal.More("%v", err)
+	}
+
+	data , err := handle.GetVerification(req.GetAddress())
+	if err != nil {
+		rctx.GetLog().Warn("query GetVerification failed", "err", err)
+		return resp, err
+	}
+
+	resp = acom.GetVerificationToXchain(data)
+
+	return resp, nil
+}
+
+//获取链节点的部分信息
+func (t *RpcServ) GetSystemStatusExplorer(gctx context.Context, req *pb.PledgeVotingRequest)(*pb.BCStatusExplorer,error){
+	resp := &pb.BCStatusExplorer{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+	if req == nil {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+	handle, err := models.NewChainHandle(req.GetBcname(), rctx)
+	if err != nil {
+		rctx.GetLog().Warn("new chain handle failed", "err", err)
+		return resp, ecom.ErrInternal.More("%v", err)
+	}
+	data , err := handle.GetSystemStatusExplorer()
+	if err != nil {
+		rctx.GetLog().Warn("query GetSystemStatusExplorer failed", "err", err)
+		return resp, err
+	}
+
+	resp = acom.GetSystemStatusExplorerToXchain(data)
+	peerInfo := t.engine.Context().Net.PeerInfo()
+	peerUrls := acom.PeerInfoToStrings(peerInfo)
+	resp.Nodes = int64(len(peerUrls))
+
 	return resp, nil
 }
 
