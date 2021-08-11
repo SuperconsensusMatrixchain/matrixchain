@@ -3,11 +3,11 @@
     "predistribution": [
         {
             "address": "TeyyPLpp9L7QAcxHangtcHTu7HUZ6iydY",
-            "quota": "100000000000000000000"
+            "quota": "15000000000000000"
         }
     ],
     "maxblocksize": "128",
-    "award": "1000000",
+    "award": "142690000",
     "decimals": "8",
     "award_decay": {
         "height_gap": 31536000,
@@ -29,7 +29,7 @@
             "period": "3000",
             "alternate_interval": "3000",
             "term_interval": "6000",
-            "block_num": "20",
+            "block_num": "120",
             "vote_unit_price": "1",
             "init_proposer": {
                 "1": ["TeyyPLpp9L7QAcxHangtcHTu7HUZ6iydY", "SmJG3rH2ZzYQ9ojxhbRCPwFiE9y6pD1Co","iYjtLcW6SVCiousAb5DFKWtWroahhEj4u"]
