@@ -13,6 +13,7 @@ type GovernBuyTokenCommand struct {
 	amount   string
 	fee      string
 	desc     string
+	money    string
 }
 
 func NewGovernBuyTokenCommand(cli *Cli) *cobra.Command {
@@ -35,11 +36,12 @@ func (c *GovernBuyTokenCommand) addFlags() {
 	c.cmd.Flags().StringVar(&c.fee, "fee", "0", "The fee to initialize govern token.")
 	c.cmd.Flags().StringVar(&c.amount, "amount", "0", "The amount to buy govern token.")
 	c.cmd.Flags().StringVar(&c.desc, "desc", "0", "transaction description.")
+	c.cmd.Flags().StringVar(&c.money, "money", "0", "transaction description.")
 }
 
 func (c *GovernBuyTokenCommand) BuyToken(ctx context.Context) error {
 	ct := &CommTrans{
-		Amount: c.amount,
+		Amount: c.money,
 		Fee:	c.fee,
 		Descfile: c.desc,
 		FrozenHeight: 0,
