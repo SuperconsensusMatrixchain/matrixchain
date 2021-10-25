@@ -81,8 +81,9 @@ func (t *ChainHandle) SelectUtxo(account string, need *big.Int, isLock, isExclud
 		return nil, ecom.ErrUnauthorized
 	}
 
-	return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).SelectUTXO(account, need,
-		isLock, isExclude)
+	// return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).SelectUTXO(account, need, isLock, isExclude)
+	// 更换UTXO选择算法（随机逼近法）
+	return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).StochasticApproximationSelectUtxos(account, need, isLock, isExclude)
 }
 
 func (t *ChainHandle) SelectUTXOBySize(account string, isLock, isExclude bool,

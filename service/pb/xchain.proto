@@ -196,6 +196,14 @@ service Xchain {
     };
   }
 
+  // GetSystemStatusString 替代原来的GetSystemStatus接口
+  rpc GetSystemStatusString(CommonIn) returns (SystemsStatusStringReply) {
+    option (google.api.http) = {
+      post : "/v1/get_sysstatus_with_string"
+      body : "*"
+    };
+  }
+
   // GetConsensusChains query consensus status
   rpc GetConsensusStatus(ConsensusStatRequest) returns (ConsensusStatus) {
     option (google.api.http) = {
@@ -655,6 +663,176 @@ message SystemsStatus {
 message SystemsStatusReply {
   Header header = 1;
   SystemsStatus systems_status = 2;
+}
+
+message SystemsStatusStringReply {
+  Header header = 1;
+  SystemsStatusString systems_status = 2;
+}
+
+message SystemsStatusString {
+  Header header = 1;
+  repeated BCStatusString bcs_status = 2;
+  Speeds speeds = 3;
+  repeated string peerUrls = 4;
+}
+
+// BlockChain status
+message BCStatusString {
+  Header header = 1;
+  // block name
+  string bcname = 2;
+  // ledger metadata（bytes子字段转string再返回
+  LedgerMetaString meta = 3;
+  // The information of the longest block（bytes子字段转string再返回
+  InternalBlockString block = 4;
+  // Utox information（bytes子字段转string再返回
+  UtxoMetaString utxoMeta = 5;
+  // Branch info
+  repeated string branchBlockid = 6;
+}
+
+// Ledger metadata
+message LedgerMetaString {
+  // root block id（由bytes转string再返回
+  string root_blockid = 1;
+  // tip block id（由bytes转string再返回
+  string tip_blockid = 2;
+  // the height of the trunk
+  int64 trunk_height = 3;
+}
+
+// The internal block struct
+message InternalBlockString {
+  // block version
+  int32 version = 1;
+  // Random number used to avoid replay attacks
+  int32 nonce = 2;
+  // blockid generate the hash sign of the block used by sha256（由bytes转string再返回
+  string blockid = 3;
+  // pre_hash is the parent blockid of the block（由bytes转string再返回
+  string pre_hash = 4;
+  // The miner id（由bytes转string再返回
+  string proposer = 5;
+  // The sign which miner signed: blockid + nonce + timestamp（由bytes转string再返回
+  string sign = 6;
+  // The pk of the miner（由bytes转string再返回
+  string pubkey = 7;
+  // The Merkle Tree root（由bytes转string再返回
+  string merkle_root = 8;
+  // The height of the blockchain
+  int64 height = 9;
+  // Timestamp of the block
+  int64 timestamp = 10;
+  // Transactions of the block, only txid stored on kv, the detail information
+  // stored in another table
+  repeated TransactionString transactions = 11;
+  // The transaction count of the block
+  int32 tx_count = 12;
+  // 所有交易hash的merkle tree（由bytes转string再返回
+  repeated string merkle_tree = 13;
+  int64 curTerm = 16;
+  int64 curBlockNum = 17;
+  map<string, string> failed_txs = 18; // txid -> failed reason
+  int32 targetBits = 19;
+
+  // Justify used in chained-bft
+  QuorumCert Justify = 20;
+
+  // 下面的属性会动态变化
+  // If the block is on the trunk
+  bool in_trunk = 14;
+  // Next next block which on trunk（由bytes转string再返回
+  string next_hash = 15;
+}
+
+// Transaction is the information of the transaction
+message TransactionString {
+  // txid is the id of this transaction（由bytes转string再返回
+  string txid = 1;
+  // the blockid the transaction belong to（由bytes转string再返回
+  string blockid = 2;
+  // Transaction input list
+  repeated TxInputString tx_inputs = 3;
+  // Transaction output list
+  repeated TxOutputString tx_outputs = 4;
+  // Transaction description or system contract
+  bytes desc = 6;
+  // Mining rewards
+  bool coinbase = 7;
+  // Random number used to avoid replay attacks
+  string nonce = 8;
+  // Timestamp to launch the transaction
+  int64 timestamp = 9;
+  // tx format version; tx格式版本号
+  int32 version = 10;
+  // auto generated tx
+  bool autogen = 11;
+
+  repeated TxInputExt tx_inputs_ext = 23;
+  repeated TxOutputExt tx_outputs_ext = 24;
+  repeated InvokeRequest contract_requests = 25;
+
+  // 权限系统新增字段
+  // 交易发起者, 可以是一个Address或者一个Account
+  string initiator = 26;
+  // 交易发起需要被收集签名的AddressURL集合信息，包括用于utxo转账和用于合约调用
+  repeated string auth_require = 27;
+  // 交易发起者对交易元数据签名，签名的内容包括auth_require字段
+  repeated SignatureInfo initiator_signs = 28;
+  // 收集到的签名
+  repeated SignatureInfo auth_require_signs = 29;
+  // 节点收到tx的时间戳，不参与签名
+  int64 received_timestamp = 30;
+  // 统一签名(支持多重签名/环签名等，与initiator_signs/auth_require_signs不同时使用)
+  XuperSignature xuper_sign = 31;
+  // 可修改区块链标记
+  ModifyBlock modify_block = 32;
+  // HD加解密相关信息
+  HDInfo HD_info = 33;
+}
+
+// Transaction input
+message TxInputString {
+  // The transaction id referenced to（由bytes转string再返回
+  string ref_txid = 1;
+  // The output offset of the transaction referenced to
+  int32 ref_offset = 2;
+  // The address of the launcher（由bytes转string再返回
+  string from_addr = 5;
+  // The amount of the transaction（由bytes转string再返回
+  string amount = 6;
+  // Frozen height
+  int64 frozen_height = 7;
+}
+
+// Transaction output
+message TxOutputString {
+  // The amount of the transaction（由bytes转string再返回
+  string amount = 1;
+  // The address of the launcher（由bytes转string再返回
+  string to_addr = 2;
+  // Fronzen height
+  int64 frozen_height = 4;
+}
+
+// Utxo metadata
+message UtxoMetaString {
+  string latest_blockid = 1; // utxo vm目前执行到的blockid（由bytes转string再返回
+  repeated string lock_key_list = 2;
+  string utxo_total = 3;                         // 当前utxo vm上的总资产
+  int64 avgDelay = 4;                            // 平均上链延时
+  int64 unconfirmTxAmount = 5;                   // 待确认交易量
+  int64 max_block_size = 6;                      // max block size
+  repeated InvokeRequest reserved_contracts = 7; // preset contracts
+  InvokeRequest forbidden_contract =
+      8; // reset forbidden contract configuration
+  int64 new_account_resource_amount =
+      9; // the resource amount of creating an account
+  int64 irreversibleBlockHeight = 10; // 当前不可逆区块高度，与utxo对齐
+  int64 irreversibleSlideWindow = 11; // 当前不可逆区块高度调整窗口
+  GasPrice gasPrice = 12;
+  InvokeRequest group_chain_contract = 13; // 群组合约相关
 }
 
 message ConsensusStatRequest {

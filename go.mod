@@ -14,9 +14,12 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/superconsensus-chain/xupercore v1.0.5
 	github.com/xuperchain/crypto v0.0.0-20201028025054-4d560674bcd6
-	golang.org/x/net v0.0.0-20200822124328-c89045814202
+	github.com/xuperchain/xupercore v0.0.0-20210908121436-f3461a4e5fb1 // indirect
+	golang.org/x/net v0.0.0-20201021035429-f5854403a974
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013
 	google.golang.org/grpc v1.35.0
 )
 
 replace github.com/hyperledger/burrow => github.com/xuperchain/burrow v0.30.6-0.20210115120720-3da1be35a1e2
+
+replace github.com/superconsensus-chain/xupercore v1.0.5 => github.com/superconsensus-chain/xupercore-1 v1.0.3

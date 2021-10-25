@@ -27,6 +27,8 @@ func NewGovernTokenCommand(cli *Cli) *cobra.Command {
 	c.cmd.AddCommand(NewGovernTokenQueryCommand(cli))
 	c.cmd.AddCommand(NewGovernBuyTokenCommand(cli))
 	c.cmd.AddCommand(NewGovernSellTokenCommand(cli))
+	c.cmd.AddCommand(NewBonusObtainCommand(cli))
+	c.cmd.AddCommand(NewBonusQueryCommand(cli))
 	return c.cmd
 }
 

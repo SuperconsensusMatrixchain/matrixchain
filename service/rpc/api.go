@@ -2,6 +2,7 @@ package rpc
 
 import (
 	"context"
+	"encoding/hex"
 	"math/big"
 
 	sctx "github.com/superconsensus-chain/xupercore/example/xchain/common/context"
@@ -721,6 +722,160 @@ func (t *RpcServ) GetSystemStatus(gctx context.Context, req *pb.CommonIn) (*pb.S
 	}
 
 	resp.SystemsStatus = systemsStatus
+	return resp, nil
+}
+
+// 替代原来的GetSystemStatus接口，因为部分结构字段有byte[]，http请求json结果乱码，故改【部分】bytes字段为string再返回
+func (t *RpcServ) GetSystemStatusString(gctx context.Context, req *pb.CommonIn) (*pb.SystemsStatusStringReply, error) {
+	// 默认响应
+	resp := &pb.SystemsStatusStringReply{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+
+	if req == nil {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+
+	systemsStatus := &pb.SystemsStatus{
+		Speeds: &pb.Speeds{
+			SumSpeeds: make(map[string]float64),
+			BcSpeeds:  make(map[string]*pb.BCSpeeds),
+		},
+	}
+	bcs := t.engine.GetChains()
+	for _, bcName := range bcs {
+		bcStatus := &pb.BCStatus{Header: req.Header, Bcname: bcName}
+		status, err := t.GetBlockChainStatus(gctx, bcStatus)
+		if err != nil {
+			rctx.GetLog().Warn("get chain status error", "error", err)
+		}
+
+		systemsStatus.BcsStatus = append(systemsStatus.BcsStatus, status)
+	}
+
+	if req.ViewOption == pb.ViewOption_NONE || req.ViewOption == pb.ViewOption_PEERS {
+		peerInfo := t.engine.Context().Net.PeerInfo()
+		peerUrls := acom.PeerInfoToStrings(peerInfo)
+		systemsStatus.PeerUrls = peerUrls
+	}
+
+	// 前面逻辑不变，返回前再将byte转为string
+	systemsStatusString := &pb.SystemsStatusString{}
+	systemsStatusString.Speeds = systemsStatus.Speeds
+	systemsStatusString.Header = systemsStatus.Header
+	systemsStatusString.PeerUrls = systemsStatus.PeerUrls
+	BcsStatusString := make([]*pb.BCStatusString, 0)
+
+	statusSlice := systemsStatus.BcsStatus
+	for _, status := range statusSlice {
+
+		merkleTreeSlice := make([]string, 0)
+		for _, bytes := range status.Block.MerkleTree {
+			merkleTreeSlice = append(merkleTreeSlice, hex.EncodeToString(bytes))
+		}
+
+		txsString := make([]*pb.TransactionString, 0)
+		// 最新块的交易信息
+		for _, transaction := range status.Block.Transactions {
+			inputList := make([]*pb.TxInputString, 0)
+			outputList := make([]*pb.TxOutputString, 0)
+			// 交易的输入
+			for _, input := range transaction.TxInputs {
+				inputList = append(inputList, &pb.TxInputString{
+					RefTxid: hex.EncodeToString(input.RefTxid),
+					RefOffset: input.RefOffset,
+					FromAddr: string(input.FromAddr),
+					Amount: big.NewInt(0).SetBytes(input.Amount).String(),
+					FrozenHeight: input.FrozenHeight,
+				})
+			}
+			// 交易输出
+			for _, output := range transaction.TxOutputs {
+				outputList = append(outputList, &pb.TxOutputString{
+					Amount: big.NewInt(0).SetBytes(output.Amount).String(),
+					ToAddr: string(output.ToAddr),
+					FrozenHeight: output.FrozenHeight,
+				})
+			}
+			txsString = append(txsString, &pb.TransactionString{
+				Txid: hex.EncodeToString(transaction.Txid),
+				Blockid: hex.EncodeToString(transaction.Blockid),
+				Timestamp: transaction.Timestamp,
+				TxInputs: inputList,
+				TxOutputs: outputList,
+				Desc: transaction.Desc, // desc
+				Coinbase: transaction.Coinbase,
+				Nonce: transaction.Nonce,
+				Version: transaction.Version,
+				Initiator: transaction.Initiator, // 交易发起者
+				// 以下的信息不重要
+				Autogen: transaction.Autogen,
+				TxInputsExt: transaction.TxInputsExt,
+				TxOutputsExt: transaction.TxOutputsExt,
+				ContractRequests: transaction.ContractRequests,
+				AuthRequire: transaction.AuthRequire,
+				InitiatorSigns: transaction.InitiatorSigns,
+				AuthRequireSigns: transaction.AuthRequireSigns,
+				ReceivedTimestamp: transaction.ReceivedTimestamp,
+				XuperSign: transaction.XuperSign,
+				ModifyBlock: transaction.ModifyBlock,
+				HDInfo: transaction.HDInfo,
+			})
+		}
+
+		BcsStatusString = append(BcsStatusString, &pb.BCStatusString{
+			Header: status.Header,
+			Bcname: status.Bcname,
+			BranchBlockid: status.BranchBlockid,
+			Meta: &pb.LedgerMetaString{
+				RootBlockid: hex.EncodeToString(status.Meta.RootBlockid),
+				TipBlockid: hex.EncodeToString(status.Meta.TipBlockid),
+				TrunkHeight: status.Meta.TrunkHeight,
+			},
+			UtxoMeta: &pb.UtxoMetaString{
+				LatestBlockid: hex.EncodeToString(status.UtxoMeta.LatestBlockid),
+				LockKeyList: status.UtxoMeta.LockKeyList,
+				UtxoTotal: status.UtxoMeta.UtxoTotal,
+				AvgDelay: status.UtxoMeta.AvgDelay,
+				UnconfirmTxAmount: status.UtxoMeta.UnconfirmTxAmount,
+				MaxBlockSize: status.UtxoMeta.MaxBlockSize,
+				ReservedContracts: status.UtxoMeta.ReservedContracts,
+				ForbiddenContract: status.UtxoMeta.ForbiddenContract,
+				NewAccountResourceAmount: status.UtxoMeta.NewAccountResourceAmount,
+				IrreversibleBlockHeight: status.UtxoMeta.IrreversibleBlockHeight,
+				IrreversibleSlideWindow: status.UtxoMeta.IrreversibleSlideWindow,
+				GasPrice: status.UtxoMeta.GasPrice,
+				GroupChainContract: status.UtxoMeta.GroupChainContract,
+			},
+			Block: &pb.InternalBlockString{
+				Version: status.Block.Version,
+				Nonce: status.Block.Nonce,
+				Blockid: hex.EncodeToString(status.Block.Blockid), // 区块哈希
+				PreHash: hex.EncodeToString(status.Block.PreHash),
+				Proposer: string(status.Block.Proposer), // 验证人
+				Sign: hex.EncodeToString(status.Block.Sign),
+				Pubkey: hex.EncodeToString(status.Block.Pubkey),
+				MerkleRoot: hex.EncodeToString(status.Block.MerkleRoot),
+				Height: status.Block.Height, // 高度
+				Timestamp: status.Block.Timestamp, // 时间
+				Transactions: txsString, // 转入、转出、交易额、哈希、时间
+				TxCount: status.Block.TxCount,
+				MerkleTree: merkleTreeSlice,
+				CurTerm: status.Block.CurTerm,
+				CurBlockNum: status.Block.CurBlockNum,
+				FailedTxs: status.Block.FailedTxs,
+				TargetBits: status.Block.TargetBits,
+				Justify: status.Block.Justify,
+				InTrunk: status.Block.InTrunk,
+				NextHash: hex.EncodeToString(status.Block.NextHash),
+			},
+		})
+	}
+
+	systemsStatusString.BcsStatus = BcsStatusString
+
+	resp.SystemsStatus = systemsStatusString
 	return resp, nil
 }
 
