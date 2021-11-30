@@ -7,7 +7,7 @@ filename: xchain
 # 日志输出格式（logfmt | json）
 fmt: logfmt
 # 日志输出级别：debug、trace、info、warn、error
-level: debug
+level: warn
 # 日志分割周期（单位：分钟）
 rotateInterval: 60
 # 日志保留天数（单位：小时）

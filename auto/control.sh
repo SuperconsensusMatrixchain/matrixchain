@@ -15,7 +15,7 @@ TmpDir="$Pwd/tmp"
 AppPidFile="$TmpDir/$AppName.pid"
 ConfDir="$Pwd/conf"
 AppConf="env.yaml"
-RootChainDir="$Pwd/data/blockchain/xuper"
+RootChainDir="$Pwd/data/blockchain/matrixchain"
 
 export PATH="$Pwd/bin":$PATH
 

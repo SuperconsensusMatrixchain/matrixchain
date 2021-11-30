@@ -12,8 +12,11 @@ isTls: false
 keyPath: netkeys
 # BootNodes config the bootNodes the node to connect
 bootNodes:
-  - "/ip4/127.0.0.1/tcp/47101/p2p/Qmf2HeHe4sspGkfRCTq6257Vm3UHzvh2TeQJHHvHzzuFw6"
-  - "/ip4/127.0.0.1/tcp/47102/p2p/QmQKp8pLWSgV4JiGjuULKV1JsdpxUtnDEUMP8sGaaUbwVL"
-  - "/ip4/127.0.0.1/tcp/47103/p2p/QmZXjZibcL5hy2Ttv5CnAQnssvnCbPEGBzqk7sAnL69R1E"
+  - "/ip4/8.134.90.155/tcp/47101/p2p/QmTSQ1t8Ssfsxb98YYM9cpsCTbrX4wGqGrPWM1PzJL1PcW"
+  - "/ip4/101.133.174.235/tcp/47101/p2p/QmRjFz5kS7asbs6K9kFUDuUJvsZyBo42Q7T1qLHs8RqsSh"
+  - "/ip4/182.92.151.172/tcp/47101/p2p/Qmf6osMTJaCS5gtFSf7F2DdXPftXjL8iFpNPs9XR66rJAW"
+#  - "/ip4/127.0.0.1/tcp/47101/p2p/Qmf2HeHe4sspGkfRCTq6257Vm3UHzvh2TeQJHHvHzzuFw6"
+#  - "/ip4/127.0.0.1/tcp/47102/p2p/QmQKp8pLWSgV4JiGjuULKV1JsdpxUtnDEUMP8sGaaUbwVL"
+#  - "/ip4/127.0.0.1/tcp/47103/p2p/QmZXjZibcL5hy2Ttv5CnAQnssvnCbPEGBzqk7sAnL69R1E"
 # service name
 serviceName: localhost

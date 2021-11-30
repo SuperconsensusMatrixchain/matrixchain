@@ -2,16 +2,16 @@
     "version": "1",
     "predistribution": [
         {
-            "address": "TeyyPLpp9L7QAcxHangtcHTu7HUZ6iydY",
-            "quota": "15000000000000000"
+            "address": "m4yitDQ54uZ7Bcfi6SFiTrjXi1uik1UNq",
+            "quota": "100000000000000000"
         }
     ],
     "maxblocksize": "128",
-    "award": "142690000",
+    "award": "951290000",
     "decimals": "8",
     "award_decay": {
-        "height_gap": 31536000,
-        "ratio": 1
+        "height_gap": 10512000,
+        "ratio": 1.1
     },
     "nofee": false,
     "gas_price": {
@@ -29,14 +29,16 @@
             "period": "3000",
             "alternate_interval": "3000",
             "term_interval": "6000",
-            "block_num": "120",
+            "block_num": "12",
             "vote_unit_price": "1",
             "init_proposer": {
-                "1": ["TeyyPLpp9L7QAcxHangtcHTu7HUZ6iydY", "SmJG3rH2ZzYQ9ojxhbRCPwFiE9y6pD1Co","iYjtLcW6SVCiousAb5DFKWtWroahhEj4u"]
+                "1": ["SczvCgniXpKHm4cbYgVXiPVtg5sc2g1GL", "X4u42vG9rfK9fgKAXqpQRWAmw8rQodEEc", "mCqpN5Z3wGXUhku4EAg6ks8xXNkCtKaNr"]
             },
             "init_proposer_neturl": {
                 "1": ["/ip4/127.0.0.1/tcp/38101/p2p/Qmf2HeHe4sspGkfRCTq6257Vm3UHzvh2TeQJHHvHzzuFw6e", "/ip4/127.0.0.1/tcp/38102/p2p/QmQKp8pLWSgV4JiGjuULKV1JsdpxUtnDEUMP8sGaaUbwVL","/ip4/127.0.0.1/tcp/38103/p2p/QmZXjZibcL5hy2Ttv5CnAQnssvnCbPEGBzqk7sAnL69R1E"]
             }
         }
-    }
+    },
+    "transfer_fee_amount": 1000000,
+    "nominate_percent": 100000
 }
