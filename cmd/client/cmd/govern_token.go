@@ -20,10 +20,11 @@ func NewGovernTokenCommand(cli *Cli) *cobra.Command {
 	c.cli = cli
 	c.cmd = &cobra.Command{
 		Use:   "governToken",
-		Short: "governToken: init|transfer|query|buy|sell.",
+		Short: "governToken: total|bonusQuery|bonusObtain|query|buy|sell.",
 	}
-	c.cmd.AddCommand(NewGovernInitCommand(cli))
-	c.cmd.AddCommand(NewGovernTransferCommand(cli))
+	//c.cmd.AddCommand(NewGovernInitCommand(cli))
+	//c.cmd.AddCommand(NewGovernTransferCommand(cli))
+	c.cmd.AddCommand(NewTotalCommand(cli))
 	c.cmd.AddCommand(NewGovernTokenQueryCommand(cli))
 	c.cmd.AddCommand(NewGovernBuyTokenCommand(cli))
 	c.cmd.AddCommand(NewGovernSellTokenCommand(cli))

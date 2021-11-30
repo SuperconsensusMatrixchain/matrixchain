@@ -2,8 +2,11 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus-chain/xupercore/lib/utils"
+	"github.com/xuperchain/xuperchain/service/pb"
 )
 
 type BonusObtainCommand struct {
@@ -63,7 +66,19 @@ func (c *BonusObtainCommand) Obtain(ctx context.Context) error {
 	ct.ModuleName = "xkernel"
 	ct.ContractName = "$govern_token"
 	ct.Args["amount"] = []byte(c.amount)
-	//ct.Args["desc"] = []byte(c.desc)
+
+	bcStatus := &pb.BCStatus{
+		Header: &pb.Header{
+			Logid: utils.GenLogId(),
+		},
+		Bcname: c.cli.RootOptions.Name,
+	}
+	status, err := c.cli.XchainClient().GetBlockChainStatus(ctx, bcStatus)
+	if err != nil {
+		return fmt.Errorf("get chain status error.\n")
+	}
+	// 参照了consensus_invoke，向分红提现命令注入高度参数，不过不需要减3，反而需要+2，+1是本次交易通过后上链的高度，真正到账高度应该为本次交易的下一个块，即+2
+	ct.Args["height"] = []byte(fmt.Sprintf("%d", status.GetMeta().TrunkHeight + 2))
 
 	err = ct.Transfer(ctx)
 	if err != nil {

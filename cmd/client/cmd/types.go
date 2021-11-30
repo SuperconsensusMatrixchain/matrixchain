@@ -143,6 +143,8 @@ type Transaction struct {
 	AuthRequireSigns  []SignatureInfo  `json:"authRequireSigns"`
 	ReceivedTimestamp int64            `json:"receivedTimestamp"`
 	ModifyBlock       ModifyBlock      `json:"modifyBlock"`
+	VoteCoinbase	  bool			   `json:"vote_coinbase"`
+	ThawCoinbase	  bool			   `json:"thaw_coinbase"`
 }
 
 type ModifyBlock struct {
@@ -180,6 +182,8 @@ func FromPBTx(tx *pb.Transaction) *Transaction {
 		Coinbase:          tx.Coinbase,
 		Initiator:         tx.Initiator,
 		ReceivedTimestamp: tx.ReceivedTimestamp,
+		VoteCoinbase:	   tx.VoteCoinbase,
+		ThawCoinbase:	   tx.ThawCoinbase,
 	}
 	for _, input := range tx.TxInputs {
 		t.TxInputs = append(t.TxInputs, TxInput{

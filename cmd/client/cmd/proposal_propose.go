@@ -6,6 +6,9 @@ package cmd
 
 import (
 	"context"
+	"fmt"
+	"github.com/superconsensus-chain/xupercore/lib/utils"
+	"github.com/xuperchain/xuperchain/service/pb"
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
@@ -77,6 +80,19 @@ func (c *ProposalProposeCommand) proposeProposal(ctx context.Context) error {
 	ct.ModuleName = "xkernel"
 	ct.ContractName = "$proposal"
 	ct.Args["proposal"] = proposal
+
+	bcStatus := &pb.BCStatus{
+		Header: &pb.Header{
+			Logid: utils.GenLogId(),
+		},
+		Bcname: c.cli.RootOptions.Name,
+	}
+	status, err := c.cli.XchainClient().GetBlockChainStatus(ctx, bcStatus)
+	if err != nil {
+		return fmt.Errorf("get chain status error.\n")
+	}
+	// 参照了consensus_invoke，向提案命令注入高度参数，不过不需要减3
+	ct.Args["height"] = []byte(fmt.Sprintf("%d", status.GetMeta().TrunkHeight))
 
 	err = ct.Transfer(ctx)
 	if err != nil {
