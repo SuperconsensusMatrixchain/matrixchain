@@ -60,6 +60,10 @@ func (t *ChainHandle) Test (address string)(*protos.CandidateRatio,error){
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).Test(address)
 }
 
+func (t *ChainHandle) GovernTokenBonusQuery(account string) (*protos.BonusQueryReply, error) {
+	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).GovernTokenBonusQuery(account)
+}
+
 func (t *ChainHandle)PledgeVotingRecords(address string)(*protos.PledgeVotingResponse,error){
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).PledgeVotingRecords(address)
 }
@@ -81,9 +85,9 @@ func (t *ChainHandle) SelectUtxo(account string, need *big.Int, isLock, isExclud
 		return nil, ecom.ErrUnauthorized
 	}
 
-	// return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).SelectUTXO(account, need, isLock, isExclude)
+	return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).SelectUTXO(account, need, isLock, isExclude)
 	// 更换UTXO选择算法（随机逼近法）
-	return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).StochasticApproximationSelectUtxos(account, need, isLock, isExclude)
+	//return reader.NewUtxoReader(t.chain.Context(), t.genXctx()).StochasticApproximationSelectUtxos(account, need, isLock, isExclude)
 }
 
 func (t *ChainHandle) SelectUTXOBySize(account string, isLock, isExclude bool,

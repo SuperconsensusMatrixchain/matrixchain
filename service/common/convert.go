@@ -5,9 +5,9 @@ import (
 
 	"github.com/golang/protobuf/proto"
 
-	"github.com/xuperchain/xuperchain/service/pb"
 	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/xldgpb"
 	"github.com/superconsensus-chain/xupercore/protos"
+	"github.com/xuperchain/xuperchain/service/pb"
 )
 
 // 为了完全兼容老版本pb结构，转换交易结构
@@ -105,6 +105,23 @@ func TestToXchain(CandidateRatio *protos.CandidateRatio)*pb.CandidateRatio{
 	}
 
 	return &newCandidateRatio
+}
+
+func BonusToXchain(BonusQueryReply *protos.BonusQueryReply) *pb.BonusQueryReply {
+	if BonusQueryReply == nil {
+		return nil
+	}
+	BonusQueryReplyBuff , err := proto.Marshal(BonusQueryReply)
+	if err != nil {
+		return nil
+	}
+	var newBonusQueryReply pb.BonusQueryReply
+	err = proto.Unmarshal(BonusQueryReplyBuff, &newBonusQueryReply)
+	if err != nil {
+		return nil
+	}
+
+	return &newBonusQueryReply
 }
 
 func GetVerificationToXchain(VerificationTable *protos.VerificationTable)*pb.VerificationTable{

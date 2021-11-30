@@ -879,6 +879,32 @@ func (t *RpcServ) GetSystemStatusString(gctx context.Context, req *pb.CommonIn) 
 	return resp, nil
 }
 
+// 查询tdpos共识下治理代币分红信息
+func (t *RpcServ) GovernTokenBonusQuery(gctx context.Context, req *pb.BonusQueryRequest) (*pb.BonusQueryReply, error) {
+	// 默认响应
+	resp := &pb.BonusQueryReply{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+	if req == nil {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+
+	handle, err := models.NewChainHandle(req.GetBcname(), rctx)
+	if err != nil {
+		rctx.GetLog().Warn("new chain handle failed", "err", err)
+		return resp, ecom.ErrInternal.More("%v", err)
+	}
+
+	total, err := handle.GovernTokenBonusQuery(req.GetAccount())
+	if err != nil {
+		rctx.GetLog().Warn("V__查询分红失败", err)
+		return resp, err
+	}
+	out := acom.BonusToXchain(total)
+	return out, nil
+}
+
 //test 测试链上的数据
 func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest)(*pb.CandidateRatio,error) {
 	// 默认响应

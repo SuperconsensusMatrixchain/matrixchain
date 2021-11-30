@@ -204,6 +204,14 @@ service Xchain {
     };
   }
 
+  // GovernTokenBonusQuery tdpos投票分红查询接口
+  rpc GovernTokenBonusQuery(BonusQueryRequest) returns (BonusQueryReply) {
+    option (google.api.http) = {
+      post : "/v1/govern_token_bonus_query"
+      body : "*"
+    };
+  }
+
   // GetConsensusChains query consensus status
   rpc GetConsensusStatus(ConsensusStatRequest) returns (ConsensusStatus) {
     option (google.api.http) = {
@@ -539,6 +547,10 @@ message Transaction {
   ModifyBlock modify_block = 32;
   // HD加解密相关信息
   HDInfo HD_info = 33;
+  //投票奖励
+  bool vote_coinbase = 34;
+  //解冻，凭空产生的消耗
+  bool thaw_coinbase = 35;
 }
 
 // Ledger metadata
@@ -668,6 +680,25 @@ message SystemsStatusReply {
 message SystemsStatusStringReply {
   Header header = 1;
   SystemsStatusString systems_status = 2;
+}
+
+// 分红查询接口的请求格式
+message BonusQueryRequest {
+  Header header = 1;
+  // 链名
+  string bcname = 2;
+  // 查询账号地址
+  string account = 3;
+}
+
+// 查询分红响应
+message BonusQueryReply {
+  // 可提现的分红数量
+  int64 bonus = 1;
+  // 分红信息提示
+  string info = 2;
+  // tdpos共识提名候选人需要质押治理代币的最少量
+  string token_need = 3;
 }
 
 message SystemsStatusString {
