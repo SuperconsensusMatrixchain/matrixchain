@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/xuperchain/xuperchain/cmd/client/cmd"
+	"github.com/superconsensus/matrixchain/cmd/client/cmd"
 )
 
 var (

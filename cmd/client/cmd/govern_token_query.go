@@ -9,7 +9,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/superconsensus-chain/xupercore/kernel/contract/proposal/utils"
+	"github.com/superconsensus/matrixcore/kernel/contract/proposal/utils"
 )
 
 // GovernTokenQueryCommand govern token query cmd

@@ -14,8 +14,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
 )
 
 var (

@@ -1,6 +1,6 @@
 # Contributing to XuperChain
 
-[ English | [简体中文](https://github.com/xuperchain/xuperchain/blob/master/CONTRIBUTING_CN.md) ]
+[ English | [简体中文](https://github.com/superconsensus/matrixchain/blob/master/CONTRIBUTING_CN.md) ]
 
 Thank you for considering contributing to XuperChain!
 
@@ -34,6 +34,6 @@ Please also include a github issue link of the PR. The PR must pass the CI verif
 ## Sign the Contributor License Agreement
 We appreciate community contributions to code repositories open sourced by XuperChain. By signing a contributor license agreement, we ensure that the community is free to use your contributions.
 
-You can review the [XuperChain Contributor License Agreement](https://cla-assistant.io/xuperchain/xuperchain) and sign the CLA before submitting your PR.
+You can review the [XuperChain Contributor License Agreement](https://cla-assistant.io/superconsensus/matrixchain) and sign the CLA before submitting your PR.
 
 Active contributors might be asked to join the core contributor team, and given the ability to merge pull requests.

@@ -12,8 +12,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/lib/utils"
 )
 
 // AccountQueryCommand query acl struct

@@ -23,12 +23,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/xuperchain/xuperchain/service/common"
-	"github.com/xuperchain/xuperchain/service/pb"
-	crypto_client "github.com/superconsensus-chain/xupercore/lib/crypto/client"
-	crypto_base "github.com/superconsensus-chain/xupercore/lib/crypto/client/base"
-	cryptoHash "github.com/superconsensus-chain/xupercore/lib/crypto/hash"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
+	"github.com/superconsensus/matrixchain/service/common"
+	"github.com/superconsensus/matrixchain/service/pb"
+	crypto_client "github.com/superconsensus/matrixcore/lib/crypto/client"
+	crypto_base "github.com/superconsensus/matrixcore/lib/crypto/client/base"
+	cryptoHash "github.com/superconsensus/matrixcore/lib/crypto/hash"
+	"github.com/superconsensus/matrixcore/lib/utils"
 )
 
 // CommandFunc 代表了一个子命令，用于往Cli注册子命令

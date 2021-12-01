@@ -5,14 +5,14 @@ import (
 	"encoding/hex"
 	"math/big"
 
-	sctx "github.com/superconsensus-chain/xupercore/example/xchain/common/context"
-	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
-	"github.com/superconsensus-chain/xupercore/kernel/network/p2p"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
-	"github.com/superconsensus-chain/xupercore/protos"
-	"github.com/xuperchain/xuperchain/models"
-	acom "github.com/xuperchain/xuperchain/service/common"
-	"github.com/xuperchain/xuperchain/service/pb"
+	"github.com/superconsensus/matrixchain/models"
+	acom "github.com/superconsensus/matrixchain/service/common"
+	"github.com/superconsensus/matrixchain/service/pb"
+	sctx "github.com/superconsensus/matrixcore/example/xchain/common/context"
+	ecom "github.com/superconsensus/matrixcore/kernel/engines/xuperos/common"
+	"github.com/superconsensus/matrixcore/kernel/network/p2p"
+	"github.com/superconsensus/matrixcore/lib/utils"
+	"github.com/superconsensus/matrixcore/protos"
 )
 
 // 注意：
@@ -783,92 +783,92 @@ func (t *RpcServ) GetSystemStatusString(gctx context.Context, req *pb.CommonIn) 
 			// 交易的输入
 			for _, input := range transaction.TxInputs {
 				inputList = append(inputList, &pb.TxInputString{
-					RefTxid: hex.EncodeToString(input.RefTxid),
-					RefOffset: input.RefOffset,
-					FromAddr: string(input.FromAddr),
-					Amount: big.NewInt(0).SetBytes(input.Amount).String(),
+					RefTxid:      hex.EncodeToString(input.RefTxid),
+					RefOffset:    input.RefOffset,
+					FromAddr:     string(input.FromAddr),
+					Amount:       big.NewInt(0).SetBytes(input.Amount).String(),
 					FrozenHeight: input.FrozenHeight,
 				})
 			}
 			// 交易输出
 			for _, output := range transaction.TxOutputs {
 				outputList = append(outputList, &pb.TxOutputString{
-					Amount: big.NewInt(0).SetBytes(output.Amount).String(),
-					ToAddr: string(output.ToAddr),
+					Amount:       big.NewInt(0).SetBytes(output.Amount).String(),
+					ToAddr:       string(output.ToAddr),
 					FrozenHeight: output.FrozenHeight,
 				})
 			}
 			txsString = append(txsString, &pb.TransactionString{
-				Txid: hex.EncodeToString(transaction.Txid),
-				Blockid: hex.EncodeToString(transaction.Blockid),
+				Txid:      hex.EncodeToString(transaction.Txid),
+				Blockid:   hex.EncodeToString(transaction.Blockid),
 				Timestamp: transaction.Timestamp,
-				TxInputs: inputList,
+				TxInputs:  inputList,
 				TxOutputs: outputList,
-				Desc: transaction.Desc, // desc
-				Coinbase: transaction.Coinbase,
-				Nonce: transaction.Nonce,
-				Version: transaction.Version,
+				Desc:      transaction.Desc, // desc
+				Coinbase:  transaction.Coinbase,
+				Nonce:     transaction.Nonce,
+				Version:   transaction.Version,
 				Initiator: transaction.Initiator, // 交易发起者
 				// 以下的信息不重要
-				Autogen: transaction.Autogen,
-				TxInputsExt: transaction.TxInputsExt,
-				TxOutputsExt: transaction.TxOutputsExt,
-				ContractRequests: transaction.ContractRequests,
-				AuthRequire: transaction.AuthRequire,
-				InitiatorSigns: transaction.InitiatorSigns,
-				AuthRequireSigns: transaction.AuthRequireSigns,
+				Autogen:           transaction.Autogen,
+				TxInputsExt:       transaction.TxInputsExt,
+				TxOutputsExt:      transaction.TxOutputsExt,
+				ContractRequests:  transaction.ContractRequests,
+				AuthRequire:       transaction.AuthRequire,
+				InitiatorSigns:    transaction.InitiatorSigns,
+				AuthRequireSigns:  transaction.AuthRequireSigns,
 				ReceivedTimestamp: transaction.ReceivedTimestamp,
-				XuperSign: transaction.XuperSign,
-				ModifyBlock: transaction.ModifyBlock,
-				HDInfo: transaction.HDInfo,
+				XuperSign:         transaction.XuperSign,
+				ModifyBlock:       transaction.ModifyBlock,
+				HDInfo:            transaction.HDInfo,
 			})
 		}
 
 		BcsStatusString = append(BcsStatusString, &pb.BCStatusString{
-			Header: status.Header,
-			Bcname: status.Bcname,
+			Header:        status.Header,
+			Bcname:        status.Bcname,
 			BranchBlockid: status.BranchBlockid,
 			Meta: &pb.LedgerMetaString{
 				RootBlockid: hex.EncodeToString(status.Meta.RootBlockid),
-				TipBlockid: hex.EncodeToString(status.Meta.TipBlockid),
+				TipBlockid:  hex.EncodeToString(status.Meta.TipBlockid),
 				TrunkHeight: status.Meta.TrunkHeight,
 			},
 			UtxoMeta: &pb.UtxoMetaString{
-				LatestBlockid: hex.EncodeToString(status.UtxoMeta.LatestBlockid),
-				LockKeyList: status.UtxoMeta.LockKeyList,
-				UtxoTotal: status.UtxoMeta.UtxoTotal,
-				AvgDelay: status.UtxoMeta.AvgDelay,
-				UnconfirmTxAmount: status.UtxoMeta.UnconfirmTxAmount,
-				MaxBlockSize: status.UtxoMeta.MaxBlockSize,
-				ReservedContracts: status.UtxoMeta.ReservedContracts,
-				ForbiddenContract: status.UtxoMeta.ForbiddenContract,
+				LatestBlockid:            hex.EncodeToString(status.UtxoMeta.LatestBlockid),
+				LockKeyList:              status.UtxoMeta.LockKeyList,
+				UtxoTotal:                status.UtxoMeta.UtxoTotal,
+				AvgDelay:                 status.UtxoMeta.AvgDelay,
+				UnconfirmTxAmount:        status.UtxoMeta.UnconfirmTxAmount,
+				MaxBlockSize:             status.UtxoMeta.MaxBlockSize,
+				ReservedContracts:        status.UtxoMeta.ReservedContracts,
+				ForbiddenContract:        status.UtxoMeta.ForbiddenContract,
 				NewAccountResourceAmount: status.UtxoMeta.NewAccountResourceAmount,
-				IrreversibleBlockHeight: status.UtxoMeta.IrreversibleBlockHeight,
-				IrreversibleSlideWindow: status.UtxoMeta.IrreversibleSlideWindow,
-				GasPrice: status.UtxoMeta.GasPrice,
-				GroupChainContract: status.UtxoMeta.GroupChainContract,
+				IrreversibleBlockHeight:  status.UtxoMeta.IrreversibleBlockHeight,
+				IrreversibleSlideWindow:  status.UtxoMeta.IrreversibleSlideWindow,
+				GasPrice:                 status.UtxoMeta.GasPrice,
+				GroupChainContract:       status.UtxoMeta.GroupChainContract,
 			},
 			Block: &pb.InternalBlockString{
-				Version: status.Block.Version,
-				Nonce: status.Block.Nonce,
-				Blockid: hex.EncodeToString(status.Block.Blockid), // 区块哈希
-				PreHash: hex.EncodeToString(status.Block.PreHash),
-				Proposer: string(status.Block.Proposer), // 验证人
-				Sign: hex.EncodeToString(status.Block.Sign),
-				Pubkey: hex.EncodeToString(status.Block.Pubkey),
-				MerkleRoot: hex.EncodeToString(status.Block.MerkleRoot),
-				Height: status.Block.Height, // 高度
-				Timestamp: status.Block.Timestamp, // 时间
-				Transactions: txsString, // 转入、转出、交易额、哈希、时间
-				TxCount: status.Block.TxCount,
-				MerkleTree: merkleTreeSlice,
-				CurTerm: status.Block.CurTerm,
-				CurBlockNum: status.Block.CurBlockNum,
-				FailedTxs: status.Block.FailedTxs,
-				TargetBits: status.Block.TargetBits,
-				Justify: status.Block.Justify,
-				InTrunk: status.Block.InTrunk,
-				NextHash: hex.EncodeToString(status.Block.NextHash),
+				Version:      status.Block.Version,
+				Nonce:        status.Block.Nonce,
+				Blockid:      hex.EncodeToString(status.Block.Blockid), // 区块哈希
+				PreHash:      hex.EncodeToString(status.Block.PreHash),
+				Proposer:     string(status.Block.Proposer), // 验证人
+				Sign:         hex.EncodeToString(status.Block.Sign),
+				Pubkey:       hex.EncodeToString(status.Block.Pubkey),
+				MerkleRoot:   hex.EncodeToString(status.Block.MerkleRoot),
+				Height:       status.Block.Height,    // 高度
+				Timestamp:    status.Block.Timestamp, // 时间
+				Transactions: txsString,              // 转入、转出、交易额、哈希、时间
+				TxCount:      status.Block.TxCount,
+				MerkleTree:   merkleTreeSlice,
+				CurTerm:      status.Block.CurTerm,
+				CurBlockNum:  status.Block.CurBlockNum,
+				FailedTxs:    status.Block.FailedTxs,
+				TargetBits:   status.Block.TargetBits,
+				Justify:      status.Block.Justify,
+				InTrunk:      status.Block.InTrunk,
+				NextHash:     hex.EncodeToString(status.Block.NextHash),
 			},
 		})
 	}
@@ -906,7 +906,7 @@ func (t *RpcServ) GovernTokenBonusQuery(gctx context.Context, req *pb.BonusQuery
 }
 
 //test 测试链上的数据
-func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest)(*pb.CandidateRatio,error) {
+func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.CandidateRatio, error) {
 	// 默认响应
 	resp := &pb.CandidateRatio{}
 	// 获取请求上下文，对内传递rctx
@@ -934,7 +934,7 @@ func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest)(*pb.Ca
 }
 
 //质押投票信息返回
-func (t *RpcServ)PledgeVotingRecords(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.PledgeVotingResponse, error){
+func (t *RpcServ) PledgeVotingRecords(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.PledgeVotingResponse, error) {
 	// 默认响应
 	resp := &pb.PledgeVotingResponse{}
 	// 获取请求上下文，对内传递rctx
@@ -963,7 +963,7 @@ func (t *RpcServ)PledgeVotingRecords(gctx context.Context, req *pb.PledgeVotingR
 }
 
 //获取所有验证人信息
-func (t *RpcServ)GetVerification(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.VerificationTable, error){
+func (t *RpcServ) GetVerification(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.VerificationTable, error) {
 	resp := &pb.VerificationTable{}
 	// 获取请求上下文，对内传递rctx
 	rctx := sctx.ValueReqCtx(gctx)
@@ -978,7 +978,7 @@ func (t *RpcServ)GetVerification(gctx context.Context, req *pb.PledgeVotingReque
 		return resp, ecom.ErrInternal.More("%v", err)
 	}
 
-	data , err := handle.GetVerification(req.GetAddress())
+	data, err := handle.GetVerification(req.GetAddress())
 	if err != nil {
 		rctx.GetLog().Warn("query GetVerification failed", "err", err)
 		return resp, err
@@ -990,7 +990,7 @@ func (t *RpcServ)GetVerification(gctx context.Context, req *pb.PledgeVotingReque
 }
 
 //获取链节点的部分信息
-func (t *RpcServ) GetSystemStatusExplorer(gctx context.Context, req *pb.PledgeVotingRequest)(*pb.BCStatusExplorer,error){
+func (t *RpcServ) GetSystemStatusExplorer(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.BCStatusExplorer, error) {
 	resp := &pb.BCStatusExplorer{}
 	// 获取请求上下文，对内传递rctx
 	rctx := sctx.ValueReqCtx(gctx)
@@ -1003,7 +1003,7 @@ func (t *RpcServ) GetSystemStatusExplorer(gctx context.Context, req *pb.PledgeVo
 		rctx.GetLog().Warn("new chain handle failed", "err", err)
 		return resp, ecom.ErrInternal.More("%v", err)
 	}
-	data , err := handle.GetSystemStatusExplorer()
+	data, err := handle.GetSystemStatusExplorer()
 	if err != nil {
 		rctx.GetLog().Warn("query GetSystemStatusExplorer failed", "err", err)
 		return resp, err

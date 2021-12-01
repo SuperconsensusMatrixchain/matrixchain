@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/xuperchain/xuperchain/cmd/xchain/cmd"
+	"github.com/superconsensus/matrixchain/cmd/xchain/cmd"
 
 	"github.com/spf13/cobra"
 )

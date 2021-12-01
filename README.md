@@ -1,10 +1,10 @@
 # XuperChain
 
-[![Build Status](https://travis-ci.org/xuperchain/xuperchain.svg?branch=master)](https://travis-ci.org/xuperchain/xuperchain)
-[![Go Report Card](https://goreportcard.com/badge/github.com/xuperchain/xuperchain)](https://goreportcard.com/report/github.com/xuperchain/xuperchain)
+[![Build Status](https://travis-ci.org/superconsensus/matrixchain.svg?branch=master)](https://travis-ci.org/superconsensus/matrixchain)
+[![Go Report Card](https://goreportcard.com/badge/github.com/superconsensus/matrixchain)](https://goreportcard.com/report/github.com/superconsensus/matrixchain)
 [![GolangCI](https://golangci.com/badges/github.com/golangci/golangci-lint.svg)](https://golangci.com)
-[![License](https://img.shields.io/github/license/xuperchain/xuperchain?style=flat-square)](/LICENSE)
-[![Release](https://img.shields.io/github/v/release/xuperchain/xuperchain?style=flat-square)](https://github.com/xuperchain/xuperchain/releases/latest)
+[![License](https://img.shields.io/github/license/superconsensus/matrixchain?style=flat-square)](/LICENSE)
+[![Release](https://img.shields.io/github/v/release/superconsensus/matrixchain?style=flat-square)](https://github.com/superconsensus/matrixchain/releases/latest)
 
 [中文说明](#中文说明-1)
 -----
@@ -56,7 +56,7 @@ E-mail: xchain-help@baidu.com
 Clone the repository
 
 ```
-git clone https://github.com/xuperchain/xuperchain
+git clone https://github.com/superconsensus/matrixchain
 ```
 
 **Note**: `master` branch contains latest features but might be **unstable**. for production use, please checkout our release branch. the latest release branch is `v3.7`.
@@ -126,11 +126,11 @@ We have new documentation of Chinese version at [XuperChain Chinese Docs](https:
 
 We encourage you to contribute to XuperChain.
 
-Please review the [Contribution guidelines](https://github.com/xuperchain/xuperchain/blob/master/CONTRIBUTING.md)  for information on how to get started contributing to the project.
+Please review the [Contribution guidelines](https://github.com/superconsensus/matrixchain/blob/master/CONTRIBUTING.md)  for information on how to get started contributing to the project.
 
 ## License
 
-XuperChain is under the [Apache License, Version 2.0](https://github.com/xuperchain/xuperchain/blob/master/LICENSE).
+XuperChain is under the [Apache License, Version 2.0](https://github.com/superconsensus/matrixchain/blob/master/LICENSE).
 
 
 =====
@@ -180,7 +180,7 @@ XuperChain is under the [Apache License, Version 2.0](https://github.com/xuperch
 
 克隆XuperChain仓库
 ```
-git clone https://github.com/xuperchain/xuperchain
+git clone https://github.com/superconsensus/matrixchain
 ```
 
 **注意**: `master` 分支是日常开发分支，会包含最新的功能，但是 **不稳定**。生产环境请使用最新的已发布分支，最新的已发布分支是`v3.10`。
@@ -238,7 +238,7 @@ sh ./control.sh start
 2. 找到自己感兴趣的功能或模块
 3. 进行开发，开发完成后自测功能是否正确，并运行make & make test
 4. 发起pull request
-5. 更多详情请参见[链接](https://github.com/xuperchain/xuperchain/blob/master/CONTRIBUTING_CN.md)
+5. 更多详情请参见[链接](https://github.com/superconsensus/matrixchain/blob/master/CONTRIBUTING_CN.md)
 
 ## 许可证
 XuperChain使用的许可证是Apache 2.0

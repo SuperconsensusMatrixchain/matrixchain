@@ -8,11 +8,11 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/peer"
 
-	acom "github.com/xuperchain/xuperchain/service/common"
-	sconf "github.com/xuperchain/xuperchain/service/config"
-	"github.com/xuperchain/xuperchain/service/pb"
-	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
-	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/event"
+	acom "github.com/superconsensus/matrixchain/service/common"
+	sconf "github.com/superconsensus/matrixchain/service/config"
+	"github.com/superconsensus/matrixchain/service/pb"
+	ecom "github.com/superconsensus/matrixcore/kernel/engines/xuperos/common"
+	"github.com/superconsensus/matrixcore/kernel/engines/xuperos/event"
 )
 
 // eventService implements the interface of pb.EventService

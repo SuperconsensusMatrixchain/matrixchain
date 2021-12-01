@@ -1,6 +1,6 @@
 # XuperChain开源贡献指南
 
-[ [English](https://github.com/xuperchain/xuperchain/blob/master/CONTRIBUTING.md) | 简体中文 ]
+[ [English](https://github.com/superconsensus/matrixchain/blob/master/CONTRIBUTING.md) | 简体中文 ]
 
 
 首先，非常感谢您考虑向XuperChain提交开源贡献。
@@ -35,6 +35,6 @@ XuperChain通过github标准PR(Pull Request)流程接受代码贡献。请首先
 ## 签署贡献者许可协议(Contributor License Agreement, CLA)
 我们非常鼓励您向超级链(XuperChain)开源的代码库提交社区贡献，为了保证社区用户能免费使用您贡献的开源代码，您需要首先签署一份贡献者许可协议。
 
-您可以通过[XuperChain Contributor License Agreement](https://cla-assistant.io/xuperchain/xuperchain)浏览并签署超级链贡献者许可协议，您也可以在提交PR时通过自动回复的链接签署CLA。
+您可以通过[XuperChain Contributor License Agreement](https://cla-assistant.io/superconsensus/matrixchain)浏览并签署超级链贡献者许可协议，您也可以在提交PR时通过自动回复的链接签署CLA。
 
 活跃的贡献者可能会收到邀请，加入超级链核心贡献团队，并赋予您合入Pull Request的权限。

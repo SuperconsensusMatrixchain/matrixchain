@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixcore/lib/utils"
 )
 
 // 本文件封装了和共识模块有关的client调用接口, 具体格式为:

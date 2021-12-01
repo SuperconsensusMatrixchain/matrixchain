@@ -2,17 +2,18 @@ package cmd
 
 import (
 	"context"
+
 	"github.com/spf13/cobra"
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
 )
 
 type GovernSellTokenCommand struct {
 	cli *Cli
 	cmd *cobra.Command
 
-	amount   string
-	fee      string
-	desc     string
+	amount string
+	fee    string
+	desc   string
 }
 
 func NewGovernSellTokenCommand(cli *Cli) *cobra.Command {
@@ -39,14 +40,14 @@ func (c *GovernSellTokenCommand) addFlags() {
 
 func (c *GovernSellTokenCommand) SellToken(ctx context.Context) error {
 	ct := &CommTrans{
-		Amount: "0",
-		Fee:	c.fee,
-		Descfile: c.desc,
+		Amount:       "0",
+		Fee:          c.fee,
+		Descfile:     c.desc,
 		FrozenHeight: 0,
 		Version:      utxo.TxVersion,
-		MethodName: "Sell",
-		Args:       make(map[string][]byte),
-		IsQuick: false,
+		MethodName:   "Sell",
+		Args:         make(map[string][]byte),
+		IsQuick:      false,
 
 		ChainName:    c.cli.RootOptions.Name,
 		Keys:         c.cli.RootOptions.Keys,

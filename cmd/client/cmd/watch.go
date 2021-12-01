@@ -9,7 +9,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xuperchain/service/pb"
+	"github.com/superconsensus/matrixchain/service/pb"
 )
 
 type watchCommand struct {

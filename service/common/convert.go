@@ -5,9 +5,9 @@ import (
 
 	"github.com/golang/protobuf/proto"
 
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/xldgpb"
-	"github.com/superconsensus-chain/xupercore/protos"
-	"github.com/xuperchain/xuperchain/service/pb"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/xldgpb"
+	"github.com/superconsensus/matrixcore/protos"
 )
 
 // 为了完全兼容老版本pb结构，转换交易结构
@@ -90,11 +90,11 @@ func BlockToXchain(block *xldgpb.InternalBlock) *pb.InternalBlock {
 	return &newBlock
 }
 
-func TestToXchain(CandidateRatio *protos.CandidateRatio)*pb.CandidateRatio{
+func TestToXchain(CandidateRatio *protos.CandidateRatio) *pb.CandidateRatio {
 	if CandidateRatio == nil {
 		return nil
 	}
-	CandidateRatioBuff , err := proto.Marshal(CandidateRatio)
+	CandidateRatioBuff, err := proto.Marshal(CandidateRatio)
 	if err != nil {
 		return nil
 	}
@@ -111,7 +111,7 @@ func BonusToXchain(BonusQueryReply *protos.BonusQueryReply) *pb.BonusQueryReply 
 	if BonusQueryReply == nil {
 		return nil
 	}
-	BonusQueryReplyBuff , err := proto.Marshal(BonusQueryReply)
+	BonusQueryReplyBuff, err := proto.Marshal(BonusQueryReply)
 	if err != nil {
 		return nil
 	}
@@ -124,11 +124,11 @@ func BonusToXchain(BonusQueryReply *protos.BonusQueryReply) *pb.BonusQueryReply 
 	return &newBonusQueryReply
 }
 
-func GetVerificationToXchain(VerificationTable *protos.VerificationTable)*pb.VerificationTable{
-	if VerificationTable == nil{
+func GetVerificationToXchain(VerificationTable *protos.VerificationTable) *pb.VerificationTable {
+	if VerificationTable == nil {
 		return nil
 	}
-	VerificationTableBUff , err := proto.Marshal(VerificationTable)
+	VerificationTableBUff, err := proto.Marshal(VerificationTable)
 	if err != nil {
 
 		return nil
@@ -137,17 +137,17 @@ func GetVerificationToXchain(VerificationTable *protos.VerificationTable)*pb.Ver
 	var newVerificationTableBUff pb.VerificationTable
 	err = proto.Unmarshal(VerificationTableBUff, &newVerificationTableBUff)
 	if err != nil {
-		fmt.Printf("D__打印转换错误:%s \n",err)
+		fmt.Printf("D__打印转换错误:%s \n", err)
 		return nil
 	}
 	return &newVerificationTableBUff
 }
 
-func GetSystemStatusExplorerToXchain(BCStatusExplorer *protos.BCStatusExplorer)*pb.BCStatusExplorer{
+func GetSystemStatusExplorerToXchain(BCStatusExplorer *protos.BCStatusExplorer) *pb.BCStatusExplorer {
 	if BCStatusExplorer == nil {
 		return nil
 	}
-	BCStatusExplorerBUff , err := proto.Marshal(BCStatusExplorer)
+	BCStatusExplorerBUff, err := proto.Marshal(BCStatusExplorer)
 	if err != nil {
 		return nil
 	}
@@ -161,7 +161,7 @@ func GetSystemStatusExplorerToXchain(BCStatusExplorer *protos.BCStatusExplorer)*
 	return &newBCStatusExplorerBUff
 }
 
-func VotingRecordsToXchain(VotingResponse *protos.PledgeVotingResponse)*pb.PledgeVotingResponse{
+func VotingRecordsToXchain(VotingResponse *protos.PledgeVotingResponse) *pb.PledgeVotingResponse {
 	if VotingResponse == nil {
 		return nil
 	}
@@ -169,9 +169,9 @@ func VotingRecordsToXchain(VotingResponse *protos.PledgeVotingResponse)*pb.Pledg
 	//fmt.Printf("D__打印转换前数据VotingResponse.VoteDetailsStatus：%s \n",VotingResponse.VoteDetailsStatus)
 	//fmt.Printf("D__打印转换前数据VotingResponse.Freezetotal：%s \n",VotingResponse.Freezetotal)
 
-	VotingResponseBuff , err := proto.Marshal(VotingResponse)
+	VotingResponseBuff, err := proto.Marshal(VotingResponse)
 	if err != nil {
-		fmt.Printf("D__打印解析错误:%s \n",err)
+		fmt.Printf("D__打印解析错误:%s \n", err)
 		return nil
 	}
 
@@ -179,12 +179,11 @@ func VotingRecordsToXchain(VotingResponse *protos.PledgeVotingResponse)*pb.Pledg
 
 	err = proto.Unmarshal(VotingResponseBuff, &newVotingResponseBuff)
 	if err != nil {
-		fmt.Printf("D__打印转换错误:%s \n",err)
+		fmt.Printf("D__打印转换错误:%s \n", err)
 		return nil
 	}
 	return &newVotingResponseBuff
 }
-
 
 func ConvertInvokeReq(reqs []*pb.InvokeRequest) ([]*protos.InvokeRequest, error) {
 	if reqs == nil {

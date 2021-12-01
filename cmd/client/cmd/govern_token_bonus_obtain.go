@@ -3,18 +3,19 @@ package cmd
 import (
 	"context"
 	"fmt"
+
 	"github.com/spf13/cobra"
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
-	"github.com/xuperchain/xuperchain/service/pb"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixcore/lib/utils"
 )
 
 type BonusObtainCommand struct {
 	cli *Cli
 	cmd *cobra.Command
 
-	amount   string
-	fee      string
+	amount string
+	fee    string
 	//desc     string
 }
 
@@ -43,13 +44,13 @@ func (c *BonusObtainCommand) addFlags() {
 func (c *BonusObtainCommand) Obtain(ctx context.Context) error {
 	ct := &CommTrans{
 		Amount: "0",
-		Fee:	c.fee,
+		Fee:    c.fee,
 		//Descfile: c.desc,
 		FrozenHeight: 0,
 		Version:      utxo.TxVersion,
-		MethodName: "BonusObtain",
-		Args:       make(map[string][]byte),
-		IsQuick: false,
+		MethodName:   "BonusObtain",
+		Args:         make(map[string][]byte),
+		IsQuick:      false,
 
 		ChainName:    c.cli.RootOptions.Name,
 		Keys:         c.cli.RootOptions.Keys,
@@ -78,7 +79,7 @@ func (c *BonusObtainCommand) Obtain(ctx context.Context) error {
 		return fmt.Errorf("get chain status error.\n")
 	}
 	// 参照了consensus_invoke，向分红提现命令注入高度参数，不过不需要减3，反而需要+2，+1是本次交易通过后上链的高度，真正到账高度应该为本次交易的下一个块，即+2
-	ct.Args["height"] = []byte(fmt.Sprintf("%d", status.GetMeta().TrunkHeight + 2))
+	ct.Args["height"] = []byte(fmt.Sprintf("%d", status.GetMeta().TrunkHeight+2))
 
 	err = ct.Transfer(ctx)
 	if err != nil {

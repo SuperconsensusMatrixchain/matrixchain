@@ -4,17 +4,17 @@ import (
 	"math/big"
 	"strconv"
 
-	lpb "github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/xldgpb"
-	xctx "github.com/superconsensus-chain/xupercore/kernel/common/xcontext"
-	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
-	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/reader"
-	"github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/xpb"
-	aclUtils "github.com/superconsensus-chain/xupercore/kernel/permission/acl/utils"
-	cryptoHash "github.com/superconsensus-chain/xupercore/lib/crypto/hash"
-	"github.com/superconsensus-chain/xupercore/lib/logs"
-	"github.com/superconsensus-chain/xupercore/protos"
+	lpb "github.com/superconsensus/matrixcore/bcs/ledger/xledger/xldgpb"
+	xctx "github.com/superconsensus/matrixcore/kernel/common/xcontext"
+	ecom "github.com/superconsensus/matrixcore/kernel/engines/xuperos/common"
+	"github.com/superconsensus/matrixcore/kernel/engines/xuperos/reader"
+	"github.com/superconsensus/matrixcore/kernel/engines/xuperos/xpb"
+	aclUtils "github.com/superconsensus/matrixcore/kernel/permission/acl/utils"
+	cryptoHash "github.com/superconsensus/matrixcore/lib/crypto/hash"
+	"github.com/superconsensus/matrixcore/lib/logs"
+	"github.com/superconsensus/matrixcore/protos"
 
-	sctx "github.com/xuperchain/xuperchain/service/context"
+	sctx "github.com/superconsensus/matrixchain/service/context"
 )
 
 type ChainHandle struct {
@@ -56,7 +56,7 @@ func (t *ChainHandle) QueryTx(txId []byte) (*xpb.TxInfo, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).QueryTx(txId)
 }
 
-func (t *ChainHandle) Test (address string)(*protos.CandidateRatio,error){
+func (t *ChainHandle) Test(address string) (*protos.CandidateRatio, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).Test(address)
 }
 
@@ -64,15 +64,15 @@ func (t *ChainHandle) GovernTokenBonusQuery(account string) (*protos.BonusQueryR
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).GovernTokenBonusQuery(account)
 }
 
-func (t *ChainHandle)PledgeVotingRecords(address string)(*protos.PledgeVotingResponse,error){
+func (t *ChainHandle) PledgeVotingRecords(address string) (*protos.PledgeVotingResponse, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).PledgeVotingRecords(address)
 }
 
-func (t *ChainHandle)GetVerification(address string)(*protos.VerificationTable,error){
+func (t *ChainHandle) GetVerification(address string) (*protos.VerificationTable, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).GetVerification(address)
 }
 
-func (t *ChainHandle)GetSystemStatusExplorer()(*protos.BCStatusExplorer,error){
+func (t *ChainHandle) GetSystemStatusExplorer() (*protos.BCStatusExplorer, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).GetSystemStatusExplorer()
 }
 

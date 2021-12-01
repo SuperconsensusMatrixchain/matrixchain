@@ -782,8 +782,8 @@ github.com/stretchr/testify v1.6.1 h1:hDPOHmpOpP40lSULcqw7IrRb/u7w6RpDC9399XyoNd
 github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/subosito/gotenv v1.2.0 h1:Slr1R9HxAlEKefgq5jn9U+DnETlIUa6HfgEzj0g5d7s=
 github.com/subosito/gotenv v1.2.0/go.mod h1:N0PQaV/YGNqwC0u51sEeR/aUtSLEXKX9iv69rRypqCw=
-github.com/superconsensus-chain/xupercore-1 v1.0.3 h1:wrgBLMj9zZrnudQLW+MDrj526ghYtAaRBa2AoFBl6Bs=
-github.com/superconsensus-chain/xupercore-1 v1.0.3/go.mod h1:2ac0+4zMfpulDfurTyrjfWYEuB5irvgz/wf603Vd9uc=
+github.com/superconsensus/matrixcore-1 v1.0.3 h1:wrgBLMj9zZrnudQLW+MDrj526ghYtAaRBa2AoFBl6Bs=
+github.com/superconsensus/matrixcore-1 v1.0.3/go.mod h1:2ac0+4zMfpulDfurTyrjfWYEuB5irvgz/wf603Vd9uc=
 github.com/syndtr/gocapability v0.0.0-20170704070218-db04d3cc01c8/go.mod h1:hkRG7XYTFWNJGYcbNJQlaLq0fg1yr4J4t/NcTQtrfww=
 github.com/syndtr/goleveldb v1.0.0/go.mod h1:ZVVdQEZoIme9iO1Ch2Jdy24qqXrMMOU6lpPAyBWyWuQ=
 github.com/syndtr/goleveldb v1.0.1-0.20190923125748-758128399b1d/go.mod h1:9OrXJhf154huy1nPWmuSrkgjPUtUNhA+Zmy+6AESzuA=

@@ -12,13 +12,13 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"
 
-	sctx "github.com/superconsensus-chain/xupercore/example/xchain/common/context"
-	ecom "github.com/superconsensus-chain/xupercore/kernel/engines/xuperos/common"
-	"github.com/superconsensus-chain/xupercore/lib/logs"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
+	sctx "github.com/superconsensus/matrixcore/example/xchain/common/context"
+	ecom "github.com/superconsensus/matrixcore/kernel/engines/xuperos/common"
+	"github.com/superconsensus/matrixcore/lib/logs"
+	"github.com/superconsensus/matrixcore/lib/utils"
 
-	acom "github.com/xuperchain/xuperchain/service/common"
-	"github.com/xuperchain/xuperchain/service/pb"
+	acom "github.com/superconsensus/matrixchain/service/common"
+	"github.com/superconsensus/matrixchain/service/pb"
 )
 
 type RpcServ struct {

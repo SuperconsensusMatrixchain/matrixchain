@@ -7,13 +7,14 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
-	"github.com/xuperchain/xuperchain/service/pb"
 	"io/ioutil"
+
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/lib/utils"
 
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
 )
 
 // ProposalProposeCommand proposal a proposal struct

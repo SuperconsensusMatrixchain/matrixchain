@@ -12,9 +12,9 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/spf13/cobra"
 
-	"github.com/xuperchain/xuperchain/service/pb"
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
-	"github.com/superconsensus-chain/xupercore/kernel/contract/bridge"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixcore/kernel/contract/bridge"
 )
 
 // ContractDeployCommand wasm/native/evm deploy cmd

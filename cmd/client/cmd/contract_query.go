@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus-chain/xupercore/kernel/contract/bridge"
+	"github.com/superconsensus/matrixcore/kernel/contract/bridge"
 )
 
 // ContractQueryCommand wasm/native/evm query cmd

@@ -11,22 +11,23 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	cryptoHash "github.com/superconsensus-chain/xupercore/lib/crypto/hash"
 	"io/ioutil"
 	"math/big"
 	"os"
 	"strconv"
 	"time"
 
+	cryptoHash "github.com/superconsensus/matrixcore/lib/crypto/hash"
+
 	"github.com/golang/protobuf/proto"
 	"google.golang.org/grpc"
 
-	"github.com/superconsensus-chain/xupercore/bcs/ledger/xledger/state/utxo"
-	"github.com/superconsensus-chain/xupercore/kernel/contract"
-	crypto_client "github.com/superconsensus-chain/xupercore/lib/crypto/client"
-	"github.com/superconsensus-chain/xupercore/lib/utils"
-	"github.com/xuperchain/xuperchain/service/common"
-	"github.com/xuperchain/xuperchain/service/pb"
+	"github.com/superconsensus/matrixchain/service/common"
+	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/superconsensus/matrixcore/kernel/contract"
+	crypto_client "github.com/superconsensus/matrixcore/lib/crypto/client"
+	"github.com/superconsensus/matrixcore/lib/utils"
 )
 
 const (
@@ -658,7 +659,7 @@ func (c *CommTrans) GenTxInputsWithMergeUTXO(ctx context.Context) ([]*pb.TxInput
 	utxoInput := &pb.UtxoInput{
 		Bcname:   c.ChainName,
 		Address:  fromAddr,
-		NeedLock: true,// needLock为true时需要公钥和签名
+		NeedLock: true, // needLock为true时需要公钥和签名
 	}
 
 	pubKey, signature, err := signForLockUtxo(c.ChainName, fromAddr, c.Keys, c.CryptoType, big.NewInt(0))
