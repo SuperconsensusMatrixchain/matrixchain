@@ -1,8 +1,12 @@
 package rpc
 
 import (
+	"bytes"
 	"context"
 	"encoding/hex"
+	"fmt"
+	"github.com/golang/protobuf/proto"
+	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/xldgpb"
 	"math/big"
 
 	"github.com/superconsensus/matrixchain/models"
@@ -422,6 +426,239 @@ func (t *RpcServ) QueryTx(gctx context.Context, req *pb.TxStatus) (*pb.TxStatus,
 	return resp, nil
 }
 
+// QueryTxString 通过交易id（string）和链名查询交易信息
+func (t *RpcServ) QueryTxString(gctx context.Context, req *pb.TxStatusString) (*pb.TxStatusString, error) {
+	// 默认响应
+	resp := &pb.TxStatusString{}
+	// 获取请求上下文，对内传递rctx
+	rctx := sctx.ValueReqCtx(gctx)
+
+	if req == nil || req.GetBcname() == "" || len(req.GetTxid()) == 0 {
+		rctx.GetLog().Warn("param error,some param unset")
+		return resp, ecom.ErrParameter
+	}
+
+	handle, err := models.NewChainHandle(req.GetBcname(), rctx)
+	if err != nil {
+		rctx.GetLog().Warn("new chain handle failed", "err", err)
+		return resp, ecom.ErrInternal.More("%v", err)
+	}
+
+	/*txid, err := hex.DecodeString(req.GetTxid())
+	txInfo, err := handle.QueryTx(txid)
+	if err != nil {
+		rctx.GetLog().Warn("query tx failed", "err", err)
+		return resp, err
+	}
+
+	tx := acom.TxToXchain(txInfo.Tx)
+	if tx == nil {
+		rctx.GetLog().Warn("convert tx failed")
+		return resp, ecom.ErrInternal
+	}*/
+
+	txInfo, err := handle.QueryTxString(req.GetTxid())
+	if err != nil {
+		rctx.GetLog().Warn("query tx failed", "err", err)
+		return resp, err
+	}
+
+	txString := txToTxString(txInfo.Tx)
+	resp.Tx = txString
+
+	resp.Bcname = req.GetBcname()
+	resp.Txid = req.GetTxid()
+	resp.Status = pb.TransactionStatus(txInfo.Status)
+	resp.Distance = txInfo.Distance
+
+	rctx.GetLog().SetInfoField("bc_name", req.GetBcname())
+	rctx.GetLog().SetInfoField("account", req.GetTxid())
+
+	return resp, nil
+}
+
+func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
+	if tx == nil {
+		return nil
+	}
+	txString := &pb.TransactionString{}
+
+	// 交易信息格式转换
+	txString.Txid = hex.EncodeToString(tx.Txid)
+	txString.Blockid = hex.EncodeToString(tx.Blockid)
+	if len(tx.TxInputs) != 0 || bytes.Equal(tx.Desc, []byte("award")){
+		txString.Desc = tx.Desc
+	}
+
+	txString.Initiator = tx.Initiator
+	txString.Coinbase = tx.Coinbase
+	txString.Autogen = tx.Autogen
+	txString.Timestamp = tx.Timestamp
+	txString.ReceivedTimestamp = tx.ReceivedTimestamp
+	txString.Version = tx.Version
+
+	// utxo输入输出
+	inputList := make([]*pb.TxInputString, 0)
+	outputList := make([]*pb.TxOutputString, 0)
+	// 交易的输入
+	for _, input := range tx.TxInputs {
+		inputList = append(inputList, &pb.TxInputString{
+			RefTxid: hex.EncodeToString(input.RefTxid),
+			RefOffset: input.RefOffset,
+			FromAddr: string(input.FromAddr),
+			Amount: big.NewInt(0).SetBytes(input.Amount).String(),
+			FrozenHeight: input.FrozenHeight,
+		})
+	}
+	// 交易输出
+	for _, output := range tx.TxOutputs {
+		outputList = append(outputList, &pb.TxOutputString{
+			Amount: big.NewInt(0).SetBytes(output.Amount).String(),
+			ToAddr: string(output.ToAddr),
+			FrozenHeight: output.FrozenHeight,
+		})
+	}
+	txString.TxInputs = inputList
+	txString.TxOutputs = outputList
+
+	// 合约读写集的输入输出
+	inputListExt := make([]*pb.TxInputExtString, 0)
+	outputListExt := make([]*pb.TxOutputExtString, 0)
+	for _, input := range tx.TxInputsExt {
+		// 针对evm合约的kv用hexToString编码
+		var replace string
+		if tx.ContractRequests[0].ModuleName == "evm" {
+			replace = hex.EncodeToString(input.Key)
+		}else {
+			//replace = strings.ToValidUTF8(string(input.Key), "")
+			replace = string(input.Key)
+		}
+		inputListExt = append(inputListExt, &pb.TxInputExtString{
+			RefTxid: hex.EncodeToString(input.RefTxid),
+			RefOffset: input.RefOffset,
+			Bucket: input.Bucket,
+			Key: replace,
+		})
+	}
+	for _, output := range tx.TxOutputsExt {
+		// 针对evm合约的kv用hexToString编码
+		var replaceKey, replaceValue string
+		if tx.ContractRequests[0].ModuleName == "evm" {
+			replaceKey = hex.EncodeToString(output.Key)
+			replaceValue = hex.EncodeToString(output.Value)
+		}else {
+			//replaceKey = strings.ToValidUTF8(string(output.Key), "")
+			//replaceValue = strings.ToValidUTF8(string(output.Value), "")
+			replaceKey = string(output.Key)
+			replaceValue = string(output.Value)
+		}
+		outputListExt = append(outputListExt, &pb.TxOutputExtString{
+			Bucket: output.Bucket,
+			Key: replaceKey,
+			Value: replaceValue,
+		})
+	}
+	txString.TxInputsExt = inputListExt
+	txString.TxOutputsExt = outputListExt
+
+	// 交易请求信息
+	contractRequests := make([]*pb.InvokeRequestString, 0)
+	for _, request := range tx.ContractRequests {
+		argsMap := make(map[string]string)
+		for s, i := range request.Args {
+			argsMap[s] = string(i)
+		}
+		limits := make([]*pb.ResourceLimit, 0)
+		if len(request.ResourceLimits) != 0 {
+			for _, limit := range request.ResourceLimits {
+				buf, err := proto.Marshal(limit)
+				if err != nil {
+					fmt.Println("txToTxString marshal request err", err)
+					continue
+				}
+				var newLimit pb.ResourceLimit
+				err = proto.Unmarshal(buf, &newLimit)
+				if err != nil {
+					fmt.Println("txToTxString unmarshal request err", err)
+					continue
+				}
+				limits = append(limits, &newLimit)
+			}
+		}
+		contractRequests = append(contractRequests, &pb.InvokeRequestString{
+			ModuleName: request.ModuleName,
+			ContractName: request.ContractName,
+			MethodName: request.MethodName,
+			Amount: request.Amount,
+			ResourceLimits: limits,
+			Args: argsMap,
+		})
+	}
+	txString.ContractRequests = contractRequests
+
+	txString.Nonce = tx.Nonce
+	txString.AuthRequire = tx.AuthRequire
+
+	authSigns := make([]*pb.SignatureInfoString, 0)
+	for _, sign := range tx.AuthRequireSigns {
+		authSigns = append(authSigns, &pb.SignatureInfoString{
+			PublicKey: sign.PublicKey,
+			Sign: hex.EncodeToString(sign.Sign),
+		})
+	}
+	initSigns := make([]*pb.SignatureInfoString, 0)
+	for _, sign := range tx.InitiatorSigns {
+		initSigns = append(initSigns, &pb.SignatureInfoString{
+			PublicKey: sign.PublicKey,
+			Sign: hex.EncodeToString(sign.Sign),
+		})
+	}
+	txString.AuthRequireSigns = authSigns
+	txString.InitiatorSigns = initSigns
+
+	if tx.XuperSign != nil {
+		buf, err := proto.Marshal(tx.XuperSign)
+		if err != nil {
+			fmt.Println("txToTxString marshal xuper sign err", err)
+		}
+		xuperSign := pb.XuperSignature{}
+		err = proto.Unmarshal(buf, &xuperSign)
+		if err != nil {
+			fmt.Println("txToTxString unmarshal xuper sign err", err)
+		}
+		txString.XuperSign = &xuperSign
+	}
+
+	if tx.HDInfo != nil {
+		buf, err := proto.Marshal(tx.HDInfo)
+		if err != nil {
+			fmt.Println("txToTxString marshal hd info err", err)
+		}
+		hdInfo := pb.HDInfo{}
+		err = proto.Unmarshal(buf, &hdInfo)
+		if err != nil {
+			fmt.Println("txToTxString unmarshal hd info err", err)
+		}
+		txString.HDInfo = &hdInfo
+	}
+
+	if tx.ModifyBlock != nil {
+		buf, err := proto.Marshal(tx.ModifyBlock)
+		if err != nil {
+			fmt.Println("txToTxString marshal modify block err", err)
+		}
+		modifyBlock := pb.ModifyBlock{}
+		err = proto.Unmarshal(buf, &modifyBlock)
+		if err != nil {
+			fmt.Println("txToTxString unmarshal modify block err", err)
+		}
+		txString.ModifyBlock = &modifyBlock
+	}
+
+	return txString
+}
+
+
 // GetBalance get balance for account or addr
 func (t *RpcServ) GetBalance(gctx context.Context, req *pb.AddressStatus) (*pb.AddressStatus, error) {
 	// 默认响应
@@ -548,6 +785,23 @@ func (t *RpcServ) GetBalanceDetail(gctx context.Context, req *pb.AddressBalanceS
 
 	rctx.GetLog().SetInfoField("account", req.GetAddress())
 	return resp, nil
+}
+
+// GetBlockString 根据块id（string）查询块信息
+func (t *RpcServ) GetBlockString(gctx context.Context, req *pb.BlockIDString) (*pb.Block, error) {
+	blkId, err := hex.DecodeString(req.GetBlockid())
+	if err != nil {
+		return nil, err
+	}
+	requset := &pb.BlockID{}
+
+	requset.Header = req.GetHeader()
+	requset.Bcname = req.GetBcname()
+	requset.NeedContent = req.GetNeedContent()
+	requset.Blockid = blkId
+
+	// 请求转发
+	return t.GetBlock(gctx, requset)
 }
 
 // GetBlock get block info according to blockID
@@ -778,7 +1032,11 @@ func (t *RpcServ) GetSystemStatusString(gctx context.Context, req *pb.CommonIn) 
 		txsString := make([]*pb.TransactionString, 0)
 		// 最新块的交易信息
 		for _, transaction := range status.Block.Transactions {
-			inputList := make([]*pb.TxInputString, 0)
+
+			tx := acom.TxToXledger(transaction)
+			txString := txToTxString(tx)
+			txsString = append(txsString, txString)
+			/*inputList := make([]*pb.TxInputString, 0)
 			outputList := make([]*pb.TxOutputString, 0)
 			// 交易的输入
 			for _, input := range transaction.TxInputs {
@@ -821,7 +1079,7 @@ func (t *RpcServ) GetSystemStatusString(gctx context.Context, req *pb.CommonIn) 
 				XuperSign:         transaction.XuperSign,
 				ModifyBlock:       transaction.ModifyBlock,
 				HDInfo:            transaction.HDInfo,
-			})
+			})*/
 		}
 
 		BcsStatusString = append(BcsStatusString, &pb.BCStatusString{

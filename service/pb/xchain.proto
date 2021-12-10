@@ -127,6 +127,14 @@ service Xchain {
     };
   }
 
+  // 通过交易id查询交易信息
+  rpc QueryTxString(TxStatusString) returns (TxStatusString) {
+    option (google.api.http) = {
+      post : "/v1/query_tx_string"
+      body : "*"
+    };
+  }
+
   // GetBalance get balance of an address,
   // Address is required for this
   rpc GetBalance(AddressStatus) returns (AddressStatus) {
@@ -160,6 +168,13 @@ service Xchain {
   rpc GetBlock(BlockID) returns (Block) {
     option (google.api.http) = {
       post : "/v1/get_block"
+      body : "*"
+    };
+  }
+
+  rpc GetBlockString(BlockIDString) returns (Block) {
+    option (google.api.http) = {
+      post : "/v1/get_block_string"
       body : "*"
     };
   }
@@ -404,6 +419,18 @@ message TxStatus {
   Transaction tx = 7;
 }
 
+// 通过交易id（string格式）查询交易信息
+message TxStatusString {
+  // 请求
+  Header header = 1;
+  string bcname = 2;
+  string txid = 3;
+  // 返回
+  TransactionStatus status = 4; //当前状态
+  int64 distance = 5;           //离主干末端的距离（如果在主干上)
+  TransactionString tx = 6;
+}
+
 message BatchTxs {
   Header header = 1;
   repeated TxStatus Txs = 2;
@@ -427,6 +454,14 @@ message BlockID {
   Header header = 4;
   string bcname = 1;
   bytes blockid = 2;
+  // if need content
+  bool need_content = 3; //是否需要内容
+}
+
+message BlockIDString {
+  Header header = 4;
+  string bcname = 1;
+  string blockid = 2;
   // if need content
   bool need_content = 3; //是否需要内容
 }
@@ -800,9 +835,9 @@ message TransactionString {
   // auto generated tx
   bool autogen = 11;
 
-  repeated TxInputExt tx_inputs_ext = 23;
-  repeated TxOutputExt tx_outputs_ext = 24;
-  repeated InvokeRequest contract_requests = 25;
+  repeated TxInputExtString tx_inputs_ext = 23;
+  repeated TxOutputExtString tx_outputs_ext = 24;
+  repeated InvokeRequestString contract_requests = 25;
 
   // 权限系统新增字段
   // 交易发起者, 可以是一个Address或者一个Account
@@ -810,9 +845,9 @@ message TransactionString {
   // 交易发起需要被收集签名的AddressURL集合信息，包括用于utxo转账和用于合约调用
   repeated string auth_require = 27;
   // 交易发起者对交易元数据签名，签名的内容包括auth_require字段
-  repeated SignatureInfo initiator_signs = 28;
+  repeated SignatureInfoString initiator_signs = 28;
   // 收集到的签名
-  repeated SignatureInfo auth_require_signs = 29;
+  repeated SignatureInfoString auth_require_signs = 29;
   // 节点收到tx的时间戳，不参与签名
   int64 received_timestamp = 30;
   // 统一签名(支持多重签名/环签名等，与initiator_signs/auth_require_signs不同时使用)
@@ -1099,6 +1134,18 @@ message InvokeRequest {
   string amount = 6;
 }
 
+// 预执行的请求结构(string)
+message InvokeRequestString {
+  string module_name = 1;
+  string contract_name = 2;
+  string method_name = 3;
+  map<string, string> args = 4;
+  repeated ResourceLimit resource_limits = 5;
+  // amount is the amount transfer to the contract
+  // attention: In one transaction, transfer to only one contract is allowed
+  string amount = 6;
+}
+
 // 预执行的返回结构
 message InvokeResponse {
   repeated TxInputExt inputs = 1;
@@ -1126,10 +1173,31 @@ message TxOutputExt {
   bytes value = 3;
 }
 
+// 扩展输入(string)
+message TxInputExtString {
+  string bucket = 1;
+  string key = 2;
+  string ref_txid = 3;
+  int32 ref_offset = 4;
+}
+
+// 扩展输出(string)
+message TxOutputExtString {
+  string bucket = 1;
+  string key = 2;
+  string value = 3;
+}
+
 // 签名详情
 message SignatureInfo {
   string PublicKey = 1;
   bytes Sign = 2;
+}
+
+// 签名详情(string)
+message SignatureInfoString {
+  string PublicKey = 1;
+  string Sign = 2;
 }
 
 // --------   Account and Permission Section --------
