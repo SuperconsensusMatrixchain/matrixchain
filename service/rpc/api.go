@@ -788,21 +788,73 @@ func (t *RpcServ) GetBalanceDetail(gctx context.Context, req *pb.AddressBalanceS
 }
 
 // GetBlockString 根据块id（string）查询块信息
-func (t *RpcServ) GetBlockString(gctx context.Context, req *pb.BlockIDString) (*pb.Block, error) {
+func (t *RpcServ) GetBlockString(gctx context.Context, req *pb.BlockIDString) (*pb.BlockString, error) {
+	// string转bytes，便于直接调用转发
 	blkId, err := hex.DecodeString(req.GetBlockid())
 	if err != nil {
 		return nil, err
 	}
-	requset := &pb.BlockID{}
 
-	requset.Header = req.GetHeader()
-	requset.Bcname = req.GetBcname()
-	requset.NeedContent = req.GetNeedContent()
-	requset.Blockid = blkId
-
+	requset := &pb.BlockID{
+		Header: req.GetHeader(),
+		Bcname: req.GetBcname(),
+		NeedContent: req.GetNeedContent(),
+		Blockid: blkId,
+	}
 	// 请求转发
-	return t.GetBlock(gctx, requset)
+	block, err := t.GetBlock(gctx, requset)
+	if err != nil {
+		return nil, err
+	}
+
+	// internal block to blockString
+	blockString := BlockToBlockString(block.Block)
+	resp := &pb.BlockString{
+		Header:  block.Header,
+		Bcname:  block.Bcname,
+		Blockid: hex.EncodeToString(block.Blockid),
+		Status: pb.BlockString_EBlockStatus(block.Status),
+		Block: blockString,
+	}
+
+	return resp, nil
 }
+
+// 块信息转换（byte转string）
+func BlockToBlockString(block *pb.InternalBlock) *pb.InternalBlockString {
+	blockString := &pb.InternalBlockString{
+		Version: block.Version,
+		Nonce: block.Nonce,
+		Blockid: hex.EncodeToString(block.Blockid),
+		PreHash: hex.EncodeToString(block.PreHash),
+		Proposer: string(block.Proposer),
+		Sign: hex.EncodeToString(block.Sign),
+		Pubkey: string(block.Pubkey),
+		MerkleRoot: hex.EncodeToString(block.MerkleRoot),
+		Height: block.Height,
+		Timestamp: block.Timestamp,
+		TxCount: block.TxCount,
+		CurTerm: block.CurTerm,
+		CurBlockNum: block.CurBlockNum,
+		FailedTxs: block.FailedTxs,
+		TargetBits: block.TargetBits,
+		Justify: block.Justify,
+		InTrunk: block.InTrunk,
+		NextHash: hex.EncodeToString(block.NextHash),
+	}
+
+	for _, i := range block.MerkleTree {
+		blockString.MerkleTree = append(blockString.MerkleTree, hex.EncodeToString(i))
+	}
+
+	for _, transaction := range block.Transactions {
+		tx := acom.TxToXledger(transaction)
+		blockString.Transactions = append(blockString.Transactions, txToTxString(tx))
+	}
+
+	return blockString
+}
+
 
 // GetBlock get block info according to blockID
 func (t *RpcServ) GetBlock(gctx context.Context, req *pb.BlockID) (*pb.Block, error) {
@@ -1290,6 +1342,25 @@ func (t *RpcServ) GetNetURL(gctx context.Context, req *pb.CommonIn) (*pb.RawUrl,
 	resp.RawUrl = peerInfo.Address
 
 	rctx.GetLog().SetInfoField("raw_url", resp.RawUrl)
+	return resp, nil
+}
+
+// 根据块高度查询块信息（byte转string）
+func (t *RpcServ) GetBlockByHeightString(gctx context.Context, req *pb.BlockHeight) (*pb.BlockString, error) {
+	// 请求转发
+	block, err := t.GetBlockByHeight(gctx, req)
+	if err != nil {
+		return nil, err
+	}
+	// 结果转换
+	blockString := BlockToBlockString(block.Block)
+	resp := &pb.BlockString{
+		Header:  block.Header,
+		Bcname:  block.Bcname,
+		Blockid: hex.EncodeToString(block.Blockid),
+		Status: pb.BlockString_EBlockStatus(block.Status),
+		Block: blockString,
+	}
 	return resp, nil
 }
 

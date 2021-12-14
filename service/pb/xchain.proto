@@ -172,9 +172,18 @@ service Xchain {
     };
   }
 
-  rpc GetBlockString(BlockIDString) returns (Block) {
+  // 根据块哈希（string）返回块信息（byte转string）
+  rpc GetBlockString(BlockIDString) returns (BlockString) {
     option (google.api.http) = {
       post : "/v1/get_block_string"
+      body : "*"
+    };
+  }
+
+  // 根据高度返回块信息（byte转string）
+  rpc GetBlockByHeightString(BlockHeight) returns (BlockString) {
+    option (google.api.http) = {
+      post : "/v1/get_block_by_height_string"
       body : "*"
     };
   }
@@ -448,6 +457,20 @@ message Block {
   }
   EBlockStatus status = 4;
   InternalBlock block = 5;
+}
+
+message BlockString {
+  Header header = 1;
+  string bcname = 2;
+  string blockid = 3;
+  enum EBlockStatus {
+    ERROR = 0;
+    TRUNK = 1;
+    BRANCH = 2;
+    NOEXIST = 3;
+  }
+  EBlockStatus status = 4;
+  InternalBlockString block = 5;
 }
 
 message BlockID {
