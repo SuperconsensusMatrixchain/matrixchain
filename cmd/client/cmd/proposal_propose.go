@@ -6,11 +6,12 @@ package cmd
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	"errors"
 	"io/ioutil"
+	"math/big"
 
 	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/lib/utils"
 
 	"github.com/spf13/cobra"
 
@@ -24,6 +25,13 @@ type ProposalProposeCommand struct {
 
 	proposal string
 	fee      string
+}
+
+type proposalArgs struct {
+	StopVotingHeight string `json:"stop_vote_height"`
+}
+type proposalData struct {
+	Args proposalArgs `json:"args"`
 }
 
 // NewProposalProposeCommand propose a proposal cmd
@@ -78,22 +86,12 @@ func (c *ProposalProposeCommand) proposeProposal(ctx context.Context) error {
 		return err
 	}
 
+	if err := c.validateProposal(proposal); err != nil {
+		return err
+	}
 	ct.ModuleName = "xkernel"
 	ct.ContractName = "$proposal"
 	ct.Args["proposal"] = proposal
-
-	bcStatus := &pb.BCStatus{
-		Header: &pb.Header{
-			Logid: utils.GenLogId(),
-		},
-		Bcname: c.cli.RootOptions.Name,
-	}
-	status, err := c.cli.XchainClient().GetBlockChainStatus(ctx, bcStatus)
-	if err != nil {
-		return fmt.Errorf("get chain status error.\n")
-	}
-	// 参照了consensus_invoke，向提案命令注入高度参数，不过不需要减3
-	ct.Args["height"] = []byte(fmt.Sprintf("%d", status.GetMeta().TrunkHeight))
 
 	err = ct.Transfer(ctx)
 	if err != nil {
@@ -108,4 +106,27 @@ func (c *ProposalProposeCommand) getProposal() ([]byte, error) {
 		return []byte("no proposal"), nil
 	}
 	return ioutil.ReadFile(c.proposal)
+}
+
+func (c *ProposalProposeCommand) validateProposal(data []byte) error {
+	pData := &proposalData{}
+	if err := json.Unmarshal(data, pData); err != nil {
+		return err
+	}
+	in := &pb.CommonIn{}
+
+	status, err := c.cli.XchainClient().GetSystemStatus(context.Background(), in)
+	if err != nil {
+		return err
+	}
+
+	stopVotingHeight, ok := big.NewInt(0).SetString(pData.Args.StopVotingHeight, 10)
+	if !ok {
+		return errors.New("invalid stop_voting_height")
+	}
+
+	if big.NewInt(status.SystemsStatus.BcsStatus[0].Meta.TrunkHeight).Cmp(stopVotingHeight) >= 0 {
+		return errors.New("stop voting height must be larger than current trunk height")
+	}
+	return nil
 }
