@@ -11,6 +11,7 @@ type BonusQueryCommand struct {
 	cmd *cobra.Command
 
 	account   string
+	show	  string
 	//fee      string
 	//desc     string
 }
@@ -33,6 +34,7 @@ func NewBonusQueryCommand(cli *Cli) *cobra.Command {
 
 func (c *BonusQueryCommand) addFlags() {
 	c.cmd.Flags().StringVarP(&c.account, "account", "A", "", "govern token account")
+	c.cmd.Flags().StringVarP(&c.show, "show", "s", "no", "show details. yes|no")
 	//c.cmd.Flags().StringVar(&c.fee, "fee", "0", "The fee to initialize govern token.")
 	//c.cmd.Flags().StringVar(&c.desc, "desc", "0", "transaction description.")
 }
@@ -62,6 +64,11 @@ func (c *BonusQueryCommand) Query(ctx context.Context) error {
 	}
 
 	ct.Args["account"] = []byte(c.account)
+	if c.show == "yes" {
+		ct.Args["show"] = []byte(c.show)
+	}else {
+		ct.Args["show"] = []byte("no")
+	}
 	//ct.Args["amount"] = []byte(c.amount)
 	//ct.Args["desc"] = []byte(c.desc)
 
