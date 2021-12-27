@@ -1157,7 +1157,7 @@ func local_request_Xchain_PreExec_0(ctx context.Context, marshaler runtime.Marsh
 
 }
 
-func request_Xchain_Test_0(ctx context.Context, marshaler runtime.Marshaler, client XchainClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Xchain_VotesUsage_0(ctx context.Context, marshaler runtime.Marshaler, client XchainClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PledgeVotingRequest
 	var metadata runtime.ServerMetadata
 
@@ -1169,12 +1169,12 @@ func request_Xchain_Test_0(ctx context.Context, marshaler runtime.Marshaler, cli
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Test(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.VotesUsage(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_Xchain_Test_0(ctx context.Context, marshaler runtime.Marshaler, server XchainServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Xchain_VotesUsage_0(ctx context.Context, marshaler runtime.Marshaler, server XchainServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq PledgeVotingRequest
 	var metadata runtime.ServerMetadata
 
@@ -1186,7 +1186,7 @@ func local_request_Xchain_Test_0(ctx context.Context, marshaler runtime.Marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Test(ctx, &protoReq)
+	msg, err := server.VotesUsage(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -2058,7 +2058,7 @@ func RegisterXchainHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 
 	})
 
-	mux.Handle("POST", pattern_Xchain_Test_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Xchain_VotesUsage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -2069,7 +2069,7 @@ func RegisterXchainHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Xchain_Test_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Xchain_VotesUsage_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -2077,7 +2077,7 @@ func RegisterXchainHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 			return
 		}
 
-		forward_Xchain_Test_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Xchain_VotesUsage_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2851,7 +2851,7 @@ func RegisterXchainHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 
 	})
 
-	mux.Handle("POST", pattern_Xchain_Test_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Xchain_VotesUsage_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -2860,14 +2860,14 @@ func RegisterXchainHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Xchain_Test_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Xchain_VotesUsage_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Xchain_Test_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Xchain_VotesUsage_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -3001,7 +3001,7 @@ var (
 
 	pattern_Xchain_PreExec_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "preexec"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Xchain_Test_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "test"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Xchain_VotesUsage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "votes_usage"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Xchain_PledgeVotingRecords_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "pledge_voting_records"}, "", runtime.AssumeColonVerbOpt(true)))
 
@@ -3077,7 +3077,7 @@ var (
 
 	forward_Xchain_PreExec_0 = runtime.ForwardResponseMessage
 
-	forward_Xchain_Test_0 = runtime.ForwardResponseMessage
+	forward_Xchain_VotesUsage_0 = runtime.ForwardResponseMessage
 
 	forward_Xchain_PledgeVotingRecords_0 = runtime.ForwardResponseMessage
 

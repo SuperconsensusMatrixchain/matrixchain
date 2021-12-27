@@ -60,8 +60,8 @@ func (t *ChainHandle) QueryTxString(txId string) (*xpb.TxInfo, error) {
 	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).QueryTxString(txId)
 }
 
-func (t *ChainHandle) Test(address string) (*protos.CandidateRatio, error) {
-	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).Test(address)
+func (t *ChainHandle) VotesUsage(address string) (*protos.CandidateRatio, error) {
+	return reader.NewLedgerReader(t.chain.Context(), t.genXctx()).VotesUsage(address)
 }
 
 func (t *ChainHandle) GovernTokenBonusQuery(account string) (*protos.BonusQueryReply, error) {

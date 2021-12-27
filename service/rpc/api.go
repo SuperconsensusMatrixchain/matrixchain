@@ -1215,8 +1215,8 @@ func (t *RpcServ) GovernTokenBonusQuery(gctx context.Context, req *pb.BonusQuery
 	return out, nil
 }
 
-//test 测试链上的数据
-func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.CandidateRatio, error) {
+// VotesUsage 票数（治理代币）使用情况，包括投票与被投票谁，提名信息，总票数与剩余可用票数等
+func (t *RpcServ) VotesUsage(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.CandidateRatio, error) {
 	// 默认响应
 	resp := &pb.CandidateRatio{}
 	// 获取请求上下文，对内传递rctx
@@ -1232,7 +1232,7 @@ func (t *RpcServ) Test(gctx context.Context, req *pb.PledgeVotingRequest) (*pb.C
 		return resp, ecom.ErrInternal.More("%v", err)
 	}
 
-	CandidateRatio, err := handle.Test(req.GetAddress())
+	CandidateRatio, err := handle.VotesUsage(req.GetAddress())
 	if err != nil {
 		rctx.GetLog().Warn("query Test failed", "err", err)
 		return resp, err

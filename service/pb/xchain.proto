@@ -346,10 +346,10 @@ service Xchain {
     };
   }
 
-  //test接口，测试用，用来查看数据的变化
-  rpc Test(PledgeVotingRequest) returns (CandidateRatio) {
+  // 查看治理代币（票数）使用情况数据
+  rpc VotesUsage(PledgeVotingRequest) returns (CandidateRatio) {
     option (google.api.http) = {
-      post : "/v1/test"
+      post : "/v1/votes_usage"
       body : "*"
     };
   }
