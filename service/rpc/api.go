@@ -527,7 +527,8 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 	for _, input := range tx.TxInputsExt {
 		// 针对evm合约的kv用hexToString编码
 		var replace string
-		if tx.ContractRequests[0].ModuleName == "evm" {
+		// 一笔交易应该只能调用一个合约，所以contractRequests[0]目前没什么问题
+		if tx.ContractRequests[0].ModuleName == "evm" || tx.ContractRequests[0].MethodName == "deployContract" {
 			replace = hex.EncodeToString(input.Key)
 		}else {
 			//replace = strings.ToValidUTF8(string(input.Key), "")
@@ -543,7 +544,7 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 	for _, output := range tx.TxOutputsExt {
 		// 针对evm合约的kv用hexToString编码
 		var replaceKey, replaceValue string
-		if tx.ContractRequests[0].ModuleName == "evm" {
+		if tx.ContractRequests[0].ModuleName == "evm" || tx.ContractRequests[0].MethodName == "deployContract" {
 			replaceKey = hex.EncodeToString(output.Key)
 			replaceValue = hex.EncodeToString(output.Value)
 		}else {
@@ -566,7 +567,12 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 	for _, request := range tx.ContractRequests {
 		argsMap := make(map[string]string)
 		for s, i := range request.Args {
-			argsMap[s] = string(i)
+			// 部署合约的交易args下的contract_code需要处理
+			if request.MethodName != "deployContract" {
+				argsMap[s] = string(i)
+			}else {
+				argsMap[s] = hex.EncodeToString(i)
+			}
 		}
 		limits := make([]*pb.ResourceLimit, 0)
 		if len(request.ResourceLimits) != 0 {
