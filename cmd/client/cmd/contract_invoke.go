@@ -8,6 +8,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/spf13/cobra"
 
@@ -104,6 +106,10 @@ func (c *ContractInvokeCommand) invoke(ctx context.Context, codeName string) err
 	err := json.Unmarshal([]byte(c.args), &args)
 	if err != nil {
 		return err
+	}
+	// 对于平行链合约，除了默认的4个方法外，新拓展的方法需要传一个秒时间戳参数
+	if ct.ContractName == "$parachain" && ( ct.MethodName == "inviteMembers" || ct.MethodName == "inviteHandle" || ct.MethodName == "joinApply" || ct.MethodName == "joinHandle" || ct.MethodName == "getHistory") {
+		args["timestamp"] = strconv.FormatInt(time.Now().Unix(), 10)
 	}
 	if c.module == string(bridge.TypeEvm) {
 		if ct.Args, err = convertToXuper3EvmArgs(args); err != nil {
