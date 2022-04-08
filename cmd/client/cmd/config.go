@@ -65,7 +65,7 @@ func (nc *RootOptions) loadConfigFile(configPath string, confName string) error 
 
 func (nc *RootOptions) setDefaultConf() {
 	nc.Host = "127.0.0.1:37101"
-	nc.Name = "matrixchain"
+	nc.Name = "xuper"
 	nc.Keys = "./data/keys"
 	nc.Crypto = "default"
 	nc.TLS = TLSOptions{

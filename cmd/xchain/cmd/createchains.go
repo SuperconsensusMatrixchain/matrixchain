@@ -40,7 +40,7 @@ func GetCreateChainCommand() *CreateChainCommand {
 	}
 
 	c.Cmd.Flags().StringVarP(&c.Name,
-		"name", "n", "matrixchain", "block chain name")
+		"name", "n", "xuper", "block chain name")
 	c.Cmd.Flags().StringVarP(&c.GenesisConf,
 		"genesis_conf", "g", "./data/genesis/xuper.json", "genesis config file path")
 	c.Cmd.Flags().StringVarP(&c.EnvConf,

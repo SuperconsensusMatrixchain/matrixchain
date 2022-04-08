@@ -1,5 +1,5 @@
 # root chain name
-rootChain: matrixchain
+rootChain: xuper
 # blockBroadcastMode is the mode for broadcast new block
 blockBroadcastMode: 0
 # txCacheExpiredTime set expired time for tx cache
