@@ -11,7 +11,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus/matrixchain/service/pb"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
 )
 
 // QueryCandidatesCommand query candidates cmd

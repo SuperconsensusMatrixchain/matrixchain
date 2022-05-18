@@ -5,9 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
 	"github.com/spf13/cobra"
-	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/lib/utils"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
 )
 
 // 本文件封装了和共识模块有关的client调用接口, 具体格式为:

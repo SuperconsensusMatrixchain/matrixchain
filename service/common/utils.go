@@ -3,9 +3,9 @@ package common
 import (
 	"fmt"
 
-	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo/txhash"
-	crypto_base "github.com/superconsensus/matrixcore/lib/crypto/client/base"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
+	"github.com/SuperconsensusMatrixchain/matrixcore/bcs/ledger/xledger/state/utxo/txhash"
+	crypto_base "github.com/SuperconsensusMatrixchain/matrixcore/lib/crypto/client/base"
 )
 
 // 适配原结构计算txid

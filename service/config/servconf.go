@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/superconsensus/matrixcore/lib/utils"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
 
 	"github.com/spf13/viper"
 )

@@ -11,10 +11,10 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
 
-	scom "github.com/superconsensus/matrixchain/service/common"
-	sconf "github.com/superconsensus/matrixchain/service/config"
-	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/lib/logs"
+	scom "github.com/SuperconsensusMatrixchain/matrixchain/service/common"
+	sconf "github.com/SuperconsensusMatrixchain/matrixchain/service/config"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/logs"
 )
 
 type Gateway struct {

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
-	crypto_client "github.com/superconsensus/matrixcore/lib/crypto/client"
+	crypto_client "github.com/SuperconsensusMatrixchain/matrixcore/lib/crypto/client"
 )
 
 // AccountRestoreCommand restore account by mnemonic

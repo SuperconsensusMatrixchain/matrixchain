@@ -1,6 +1,6 @@
 # XuperChain开源贡献指南
 
-[ [English](https://github.com/superconsensus/matrixchain/blob/master/CONTRIBUTING.md) | 简体中文 ]
+[ [English](https://github.com/SuperconsensusMatrixchain/matrixchain/blob/master/CONTRIBUTING.md) | 简体中文 ]
 
 
 首先，非常感谢您考虑向XuperChain提交开源贡献。

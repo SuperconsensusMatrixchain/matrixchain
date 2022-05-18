@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/superconsensus/matrixchain/data/mock"
-	_ "github.com/superconsensus/matrixcore/lib/storage/kvdb/leveldb"
+	"github.com/SuperconsensusMatrixchain/matrixchain/data/mock"
+	_ "github.com/SuperconsensusMatrixchain/matrixcore/lib/storage/kvdb/leveldb"
 )
 
 func TestPruneLedger(t *testing.T) {

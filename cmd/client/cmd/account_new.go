@@ -11,10 +11,10 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
 	"github.com/spf13/cobra"
-	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
-	"github.com/superconsensus/matrixcore/kernel/permission/acl/utils"
+	"github.com/SuperconsensusMatrixchain/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/SuperconsensusMatrixchain/matrixcore/kernel/permission/acl/utils"
 )
 
 // AccountNewCommand new account struct

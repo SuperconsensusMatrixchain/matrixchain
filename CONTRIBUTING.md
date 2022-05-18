@@ -1,6 +1,6 @@
 # Contributing to XuperChain
 
-[ English | [简体中文](https://github.com/superconsensus/matrixchain/blob/master/CONTRIBUTING_CN.md) ]
+[ English | [简体中文](https://github.com/SuperconsensusMatrixchain/matrixchain/blob/master/CONTRIBUTING_CN.md) ]
 
 Thank you for considering contributing to XuperChain!
 

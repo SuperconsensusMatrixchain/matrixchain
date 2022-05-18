@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/spf13/cobra"
-	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/SuperconsensusMatrixchain/matrixcore/bcs/ledger/xledger/state/utxo"
 )
 
 type GovernSellTokenCommand struct {

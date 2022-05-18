@@ -14,8 +14,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/lib/utils"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
 )
 
 // BlockCommand query block

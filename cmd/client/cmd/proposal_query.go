@@ -9,7 +9,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/superconsensus/matrixcore/kernel/contract/proposal/utils"
+	"github.com/SuperconsensusMatrixchain/matrixcore/kernel/contract/proposal/utils"
 )
 
 // ProposalQueryCommand proposal query cmd

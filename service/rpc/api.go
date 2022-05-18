@@ -5,18 +5,19 @@ import (
 	"context"
 	"encoding/hex"
 	"fmt"
-	"github.com/golang/protobuf/proto"
-	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/xldgpb"
 	"math/big"
 
-	"github.com/superconsensus/matrixchain/models"
-	acom "github.com/superconsensus/matrixchain/service/common"
-	"github.com/superconsensus/matrixchain/service/pb"
-	sctx "github.com/superconsensus/matrixcore/example/xchain/common/context"
-	ecom "github.com/superconsensus/matrixcore/kernel/engines/xuperos/common"
-	"github.com/superconsensus/matrixcore/kernel/network/p2p"
-	"github.com/superconsensus/matrixcore/lib/utils"
-	"github.com/superconsensus/matrixcore/protos"
+	"github.com/golang/protobuf/proto"
+	"github.com/SuperconsensusMatrixchain/matrixcore/bcs/ledger/xledger/xldgpb"
+
+	"github.com/SuperconsensusMatrixchain/matrixchain/models"
+	acom "github.com/SuperconsensusMatrixchain/matrixchain/service/common"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
+	sctx "github.com/SuperconsensusMatrixchain/matrixcore/example/xchain/common/context"
+	ecom "github.com/SuperconsensusMatrixchain/matrixcore/kernel/engines/xuperos/common"
+	"github.com/SuperconsensusMatrixchain/matrixcore/kernel/network/p2p"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
+	"github.com/SuperconsensusMatrixchain/matrixcore/protos"
 )
 
 // 注意：
@@ -477,7 +478,7 @@ func (t *RpcServ) QueryTxString(gctx context.Context, req *pb.TxStatusString) (*
 	return resp, nil
 }
 
-func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
+func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString {
 	if tx == nil {
 		return nil
 	}
@@ -486,7 +487,7 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 	// 交易信息格式转换
 	txString.Txid = hex.EncodeToString(tx.Txid)
 	txString.Blockid = hex.EncodeToString(tx.Blockid)
-	if len(tx.TxInputs) != 0 || bytes.Equal(tx.Desc, []byte("award")){
+	if len(tx.TxInputs) != 0 || bytes.Equal(tx.Desc, []byte("award")) {
 		txString.Desc = tx.Desc
 	}
 
@@ -503,18 +504,18 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 	// 交易的输入
 	for _, input := range tx.TxInputs {
 		inputList = append(inputList, &pb.TxInputString{
-			RefTxid: hex.EncodeToString(input.RefTxid),
-			RefOffset: input.RefOffset,
-			FromAddr: string(input.FromAddr),
-			Amount: big.NewInt(0).SetBytes(input.Amount).String(),
+			RefTxid:      hex.EncodeToString(input.RefTxid),
+			RefOffset:    input.RefOffset,
+			FromAddr:     string(input.FromAddr),
+			Amount:       big.NewInt(0).SetBytes(input.Amount).String(),
 			FrozenHeight: input.FrozenHeight,
 		})
 	}
 	// 交易输出
 	for _, output := range tx.TxOutputs {
 		outputList = append(outputList, &pb.TxOutputString{
-			Amount: big.NewInt(0).SetBytes(output.Amount).String(),
-			ToAddr: string(output.ToAddr),
+			Amount:       big.NewInt(0).SetBytes(output.Amount).String(),
+			ToAddr:       string(output.ToAddr),
 			FrozenHeight: output.FrozenHeight,
 		})
 	}
@@ -530,15 +531,15 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 		// 一笔交易应该只能调用一个合约，所以contractRequests[0]目前没什么问题
 		if tx.ContractRequests[0].ModuleName == "evm" || tx.ContractRequests[0].MethodName == "deployContract" {
 			replace = hex.EncodeToString(input.Key)
-		}else {
+		} else {
 			//replace = strings.ToValidUTF8(string(input.Key), "")
 			replace = string(input.Key)
 		}
 		inputListExt = append(inputListExt, &pb.TxInputExtString{
-			RefTxid: hex.EncodeToString(input.RefTxid),
+			RefTxid:   hex.EncodeToString(input.RefTxid),
 			RefOffset: input.RefOffset,
-			Bucket: input.Bucket,
-			Key: replace,
+			Bucket:    input.Bucket,
+			Key:       replace,
 		})
 	}
 	for _, output := range tx.TxOutputsExt {
@@ -547,7 +548,7 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 		if tx.ContractRequests[0].ModuleName == "evm" || tx.ContractRequests[0].MethodName == "deployContract" {
 			replaceKey = hex.EncodeToString(output.Key)
 			replaceValue = hex.EncodeToString(output.Value)
-		}else {
+		} else {
 			//replaceKey = strings.ToValidUTF8(string(output.Key), "")
 			//replaceValue = strings.ToValidUTF8(string(output.Value), "")
 			replaceKey = string(output.Key)
@@ -555,8 +556,8 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 		}
 		outputListExt = append(outputListExt, &pb.TxOutputExtString{
 			Bucket: output.Bucket,
-			Key: replaceKey,
-			Value: replaceValue,
+			Key:    replaceKey,
+			Value:  replaceValue,
 		})
 	}
 	txString.TxInputsExt = inputListExt
@@ -570,7 +571,7 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 			// 部署合约的交易args下的contract_code需要处理
 			if request.MethodName != "deployContract" {
 				argsMap[s] = string(i)
-			}else {
+			} else {
 				argsMap[s] = hex.EncodeToString(i)
 			}
 		}
@@ -592,12 +593,12 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 			}
 		}
 		contractRequests = append(contractRequests, &pb.InvokeRequestString{
-			ModuleName: request.ModuleName,
-			ContractName: request.ContractName,
-			MethodName: request.MethodName,
-			Amount: request.Amount,
+			ModuleName:     request.ModuleName,
+			ContractName:   request.ContractName,
+			MethodName:     request.MethodName,
+			Amount:         request.Amount,
 			ResourceLimits: limits,
-			Args: argsMap,
+			Args:           argsMap,
 		})
 	}
 	txString.ContractRequests = contractRequests
@@ -609,14 +610,14 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 	for _, sign := range tx.AuthRequireSigns {
 		authSigns = append(authSigns, &pb.SignatureInfoString{
 			PublicKey: sign.PublicKey,
-			Sign: hex.EncodeToString(sign.Sign),
+			Sign:      hex.EncodeToString(sign.Sign),
 		})
 	}
 	initSigns := make([]*pb.SignatureInfoString, 0)
 	for _, sign := range tx.InitiatorSigns {
 		initSigns = append(initSigns, &pb.SignatureInfoString{
 			PublicKey: sign.PublicKey,
-			Sign: hex.EncodeToString(sign.Sign),
+			Sign:      hex.EncodeToString(sign.Sign),
 		})
 	}
 	txString.AuthRequireSigns = authSigns
@@ -663,7 +664,6 @@ func txToTxString(tx *xldgpb.Transaction) *pb.TransactionString{
 
 	return txString
 }
-
 
 // GetBalance get balance for account or addr
 func (t *RpcServ) GetBalance(gctx context.Context, req *pb.AddressStatus) (*pb.AddressStatus, error) {
@@ -802,10 +802,10 @@ func (t *RpcServ) GetBlockString(gctx context.Context, req *pb.BlockIDString) (*
 	}
 
 	requset := &pb.BlockID{
-		Header: req.GetHeader(),
-		Bcname: req.GetBcname(),
+		Header:      req.GetHeader(),
+		Bcname:      req.GetBcname(),
 		NeedContent: req.GetNeedContent(),
-		Blockid: blkId,
+		Blockid:     blkId,
 	}
 	// 请求转发
 	block, err := t.GetBlock(gctx, requset)
@@ -819,8 +819,8 @@ func (t *RpcServ) GetBlockString(gctx context.Context, req *pb.BlockIDString) (*
 		Header:  block.Header,
 		Bcname:  block.Bcname,
 		Blockid: hex.EncodeToString(block.Blockid),
-		Status: pb.BlockString_EBlockStatus(block.Status),
-		Block: blockString,
+		Status:  pb.BlockString_EBlockStatus(block.Status),
+		Block:   blockString,
 	}
 
 	return resp, nil
@@ -829,24 +829,24 @@ func (t *RpcServ) GetBlockString(gctx context.Context, req *pb.BlockIDString) (*
 // 块信息转换（byte转string）
 func BlockToBlockString(block *pb.InternalBlock) *pb.InternalBlockString {
 	blockString := &pb.InternalBlockString{
-		Version: block.Version,
-		Nonce: block.Nonce,
-		Blockid: hex.EncodeToString(block.Blockid),
-		PreHash: hex.EncodeToString(block.PreHash),
-		Proposer: string(block.Proposer),
-		Sign: hex.EncodeToString(block.Sign),
-		Pubkey: string(block.Pubkey),
-		MerkleRoot: hex.EncodeToString(block.MerkleRoot),
-		Height: block.Height,
-		Timestamp: block.Timestamp,
-		TxCount: block.TxCount,
-		CurTerm: block.CurTerm,
+		Version:     block.Version,
+		Nonce:       block.Nonce,
+		Blockid:     hex.EncodeToString(block.Blockid),
+		PreHash:     hex.EncodeToString(block.PreHash),
+		Proposer:    string(block.Proposer),
+		Sign:        hex.EncodeToString(block.Sign),
+		Pubkey:      string(block.Pubkey),
+		MerkleRoot:  hex.EncodeToString(block.MerkleRoot),
+		Height:      block.Height,
+		Timestamp:   block.Timestamp,
+		TxCount:     block.TxCount,
+		CurTerm:     block.CurTerm,
 		CurBlockNum: block.CurBlockNum,
-		FailedTxs: block.FailedTxs,
-		TargetBits: block.TargetBits,
-		Justify: block.Justify,
-		InTrunk: block.InTrunk,
-		NextHash: hex.EncodeToString(block.NextHash),
+		FailedTxs:   block.FailedTxs,
+		TargetBits:  block.TargetBits,
+		Justify:     block.Justify,
+		InTrunk:     block.InTrunk,
+		NextHash:    hex.EncodeToString(block.NextHash),
 	}
 
 	for _, i := range block.MerkleTree {
@@ -860,7 +860,6 @@ func BlockToBlockString(block *pb.InternalBlock) *pb.InternalBlockString {
 
 	return blockString
 }
-
 
 // GetBlock get block info according to blockID
 func (t *RpcServ) GetBlock(gctx context.Context, req *pb.BlockID) (*pb.Block, error) {
@@ -1364,8 +1363,8 @@ func (t *RpcServ) GetBlockByHeightString(gctx context.Context, req *pb.BlockHeig
 		Header:  block.Header,
 		Bcname:  block.Bcname,
 		Blockid: hex.EncodeToString(block.Blockid),
-		Status: pb.BlockString_EBlockStatus(block.Status),
-		Block: blockString,
+		Status:  pb.BlockString_EBlockStatus(block.Status),
+		Block:   blockString,
 	}
 	return resp, nil
 }

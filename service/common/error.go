@@ -1,8 +1,8 @@
 package common
 
 import (
-	"github.com/superconsensus/matrixchain/service/pb"
-	ecom "github.com/superconsensus/matrixcore/kernel/engines/xuperos/common"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
+	ecom "github.com/SuperconsensusMatrixchain/matrixcore/kernel/engines/xuperos/common"
 )
 
 // 错误映射配置

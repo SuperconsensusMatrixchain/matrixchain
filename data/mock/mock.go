@@ -3,9 +3,9 @@ package mock
 import (
 	"path/filepath"
 
-	xconf "github.com/superconsensus/matrixcore/kernel/common/xconfig"
-	"github.com/superconsensus/matrixcore/lib/logs"
-	"github.com/superconsensus/matrixcore/lib/utils"
+	xconf "github.com/SuperconsensusMatrixchain/matrixcore/kernel/common/xconfig"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/logs"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
 )
 
 func NewEnvConfForTest(paths ...string) (*xconf.EnvConf, error) {

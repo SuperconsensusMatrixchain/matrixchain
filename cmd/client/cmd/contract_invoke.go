@@ -13,8 +13,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
-	"github.com/superconsensus/matrixcore/kernel/contract/bridge"
+	"github.com/SuperconsensusMatrixchain/matrixcore/bcs/ledger/xledger/state/utxo"
+	"github.com/SuperconsensusMatrixchain/matrixcore/kernel/contract/bridge"
 )
 
 // ContractInvokeCommand wasm/native/evm invoke cmd

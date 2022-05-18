@@ -16,10 +16,10 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus/matrixchain/service/common"
-	"github.com/superconsensus/matrixchain/service/pb"
-	crypto_client "github.com/superconsensus/matrixcore/lib/crypto/client"
-	"github.com/superconsensus/matrixcore/lib/utils"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/common"
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
+	crypto_client "github.com/SuperconsensusMatrixchain/matrixcore/lib/crypto/client"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
 )
 
 // MultisigSendCommand multisig send struct

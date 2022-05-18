@@ -15,8 +15,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/superconsensus/matrixcore/bcs/ledger/xledger/state/utxo"
-	crypto_client "github.com/superconsensus/matrixcore/lib/crypto/client"
+	"github.com/SuperconsensusMatrixchain/matrixcore/bcs/ledger/xledger/state/utxo"
+	crypto_client "github.com/SuperconsensusMatrixchain/matrixcore/lib/crypto/client"
 )
 
 // MultisigGenCommand multisig generate struct

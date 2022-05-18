@@ -10,9 +10,9 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/SuperconsensusMatrixchain/matrixchain/service/pb"
 	"github.com/spf13/cobra"
-	"github.com/superconsensus/matrixchain/service/pb"
-	"github.com/superconsensus/matrixcore/lib/utils"
+	"github.com/SuperconsensusMatrixchain/matrixcore/lib/utils"
 )
 
 // ACLQueryCommand query acl struct
