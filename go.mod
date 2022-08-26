@@ -20,3 +20,5 @@ require (
 )
 
 replace github.com/hyperledger/burrow => github.com/xuperchain/burrow v0.30.6-0.20211229032028-fbee6a05ab0f
+// 由原先仓库依赖改为最新（6.28 gas up）
+replace github.com/superconsensus/matrixcore v1.0.1 => github.com/SuperconsensusMatrixchain/matrixcore v0.0.0-20220628084951-564785ea7345
